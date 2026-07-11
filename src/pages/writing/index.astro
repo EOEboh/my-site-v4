@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
+import WritingRow from '@/components/WritingRow.astro';
+import { links } from '@/config/site';
+
+const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout
+  title="Writing · Emmanuel O. Eboh"
+  description="Explainers, threads, and incident stories about backend engineering, Go, and payments infrastructure."
+>
+  <section class="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+    <div class="flex flex-col gap-3">
+      <SectionLabel>ls writing/</SectionLabel>
+      <h1 class="text-display font-bold text-fg">Writing.</h1>
+      <p class="max-w-xl text-base leading-relaxed text-fg-secondary">
+        Explainers, threads, and incident stories. The goal is always the same: how backends
+        actually behave in production, without hand-waving.
+      </p>
+    </div>
+
+    <div class="mt-10 flex flex-col">
+      {entries.map((entry) => <WritingRow entry={entry} />)}
+    </div>
+
+    <p class="mt-10 text-sm text-fg-secondary">
+      Longer pieces land in my newsletter first.
+      <a
+        href={links.substack}
+        target="_blank"
+        rel="noopener"
+        class="font-mono text-accent transition-colors hover:text-accent-bright"
+      >
+        Subscribe on Substack ↗
+      </a>
+    </p>
+  </section>
+</BaseLayout>

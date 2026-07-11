@@ -1,0 +1,29 @@
+---
+/**
+ * Reusable terminal window chrome: traffic light dots, title bar, mono body.
+ * Content goes in the default slot, already styled as mono text.
+ */
+interface Props {
+  title?: string;
+  class?: string;
+}
+
+const { title = 'zsh', class: className = '' } = Astro.props;
+---
+
+<div
+  class:list={[
+    'overflow-hidden rounded-lg border border-border bg-surface shadow-2xl shadow-black/40',
+    className,
+  ]}
+>
+  <div class="flex items-center gap-2 border-b border-border px-4 py-3">
+    <span class="size-3 rounded-full bg-[#2e2e33]" aria-hidden="true"></span>
+    <span class="size-3 rounded-full bg-[#2e2e33]" aria-hidden="true"></span>
+    <span class="size-3 rounded-full bg-[#2e2e33]" aria-hidden="true"></span>
+    <span class="ml-2 font-mono text-xs text-fg-muted">{title}</span>
+  </div>
+  <div class="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed sm:p-5">
+    <slot />
+  </div>
+</div>

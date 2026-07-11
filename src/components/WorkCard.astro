@@ -1,0 +1,86 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import TechTag from '@/components/TechTag.astro';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  flagship?: boolean;
+}
+
+const { entry, flagship = false } = Astro.props;
+const { title, outcome, tags, heroImage, heroImageAlt } = entry.data;
+const href = `/work/${entry.id}/`;
+const linkText = flagship ? 'Read the build story' : 'Read the case study';
+---
+
+{
+  flagship ? (
+    <article class="card-interactive fade-up group relative overflow-hidden rounded-xl">
+      <div class="grid md:grid-cols-2">
+        <div class="flex flex-col justify-center gap-5 p-6 sm:p-10">
+          <h3 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+            <a href={href} class="after:absolute after:inset-0 focus-visible:outline-none">
+              {title.split(':')[0]}
+            </a>
+          </h3>
+          <p class="text-base leading-relaxed text-fg-secondary">{outcome}</p>
+          <ul class="flex flex-wrap gap-2" aria-label="Technologies">
+            {tags.map((tag) => (
+              <li>
+                <TechTag label={tag} />
+              </li>
+            ))}
+          </ul>
+          <p class="font-mono text-sm font-semibold text-accent transition-colors group-hover:text-accent-bright">
+            {linkText} <span aria-hidden="true">-&gt;</span>
+          </p>
+        </div>
+        {heroImage && (
+          <div class="border-t border-border md:border-t-0 md:border-l">
+            <img
+              src={heroImage}
+              alt={heroImageAlt ?? ''}
+              width="1600"
+              height="900"
+              loading="lazy"
+              class="h-full w-full object-cover"
+            />
+          </div>
+        )}
+      </div>
+    </article>
+  ) : (
+    <article class="card-interactive fade-up group relative flex flex-col overflow-hidden rounded-xl">
+      {heroImage && (
+        <div class="border-b border-border">
+          <img
+            src={heroImage}
+            alt={heroImageAlt ?? ''}
+            width="1600"
+            height="900"
+            loading="lazy"
+            class="aspect-video w-full object-cover"
+          />
+        </div>
+      )}
+      <div class="flex flex-1 flex-col gap-4 p-6">
+        <h3 class="text-xl font-bold tracking-tight text-fg">
+          <a href={href} class="after:absolute after:inset-0 focus-visible:outline-none">
+            {title.split(':')[0]}
+          </a>
+        </h3>
+        <p class="text-sm leading-relaxed text-fg-secondary">{outcome}</p>
+        <ul class="mt-auto flex flex-wrap gap-2" aria-label="Technologies">
+          {tags.map((tag) => (
+            <li>
+              <TechTag label={tag} />
+            </li>
+          ))}
+        </ul>
+        <p class="font-mono text-[13px] font-semibold text-accent transition-colors group-hover:text-accent-bright">
+          {linkText} <span aria-hidden="true">-&gt;</span>
+        </p>
+      </div>
+    </article>
+  )
+}

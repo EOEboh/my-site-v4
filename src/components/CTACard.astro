@@ -1,0 +1,24 @@
+---
+import Button from '@/components/Button.astro';
+import { links } from '@/config/site';
+
+interface Props {
+  heading?: string;
+  body?: string;
+}
+
+const {
+  heading = 'Want something like this built?',
+  body = 'I take on a small number of freelance projects. A 30 minute call is enough to scope most of them.',
+} = Astro.props;
+---
+
+<aside
+  class="rounded-xl border border-border bg-gradient-to-b from-surface to-surface-raised p-8 text-center sm:p-10"
+>
+  <h2 class="text-xl font-bold tracking-tight text-fg sm:text-2xl">{heading}</h2>
+  <p class="mx-auto mt-3 max-w-md text-sm leading-relaxed text-fg-secondary">{body}</p>
+  <div class="mt-6 flex justify-center">
+    <Button href={links.bookCall} external>Book a call</Button>
+  </div>
+</aside>

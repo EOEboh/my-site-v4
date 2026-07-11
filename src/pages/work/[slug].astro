@@ -1,0 +1,103 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
+import TechTag from '@/components/TechTag.astro';
+import CTACard from '@/components/CTACard.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+}
+
+const { entry } = Astro.props;
+const { title, outcome, role, timeline, stack, liveUrl, repoUrl, heroImage, heroImageAlt } =
+  entry.data;
+const { Content } = await render(entry);
+
+const meta = [
+  { label: 'role', value: role },
+  { label: 'timeline', value: timeline },
+];
+---
+
+<BaseLayout title={`${title} · ${entry.data.tags[0] ?? 'Case study'}`} description={outcome}>
+  <article class="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+    <!-- Outcome header -->
+    <header class="flex flex-col gap-6">
+      <SectionLabel>cat work/{entry.id}.md</SectionLabel>
+      <h1 class="text-display font-bold text-fg">{title}</h1>
+
+      <dl class="flex flex-col gap-x-8 gap-y-2 border-y border-border py-4 sm:flex-row sm:flex-wrap">
+        {
+          meta.map((item) => (
+            <div class="flex gap-2 font-mono text-[13px]">
+              <dt class="text-fg-muted">{item.label}:</dt>
+              <dd class="text-fg-secondary">{item.value}</dd>
+            </div>
+          ))
+        }
+        <div class="flex gap-2 font-mono text-[13px]">
+          <dt class="text-fg-muted">stack:</dt>
+          <dd class="text-fg-secondary">{stack.join(' · ')}</dd>
+        </div>
+      </dl>
+
+      {
+        (liveUrl || repoUrl) && (
+          <p class="flex flex-wrap gap-5 font-mono text-sm">
+            {liveUrl && (
+              <a
+                href={liveUrl}
+                target="_blank"
+                rel="noopener"
+                class="font-semibold text-accent transition-colors hover:text-accent-bright"
+              >
+                Visit the live product ↗
+              </a>
+            )}
+            {repoUrl && (
+              <a
+                href={repoUrl}
+                target="_blank"
+                rel="noopener"
+                class="text-fg-secondary transition-colors hover:text-fg"
+              >
+                View the source ↗
+              </a>
+            )}
+          </p>
+        )
+      }
+
+      {
+        heroImage && (
+          <img
+            src={heroImage}
+            alt={heroImageAlt ?? ''}
+            width="1600"
+            height="900"
+            class="rounded-xl border border-border"
+          />
+        )
+      }
+    </header>
+
+    <!-- Body: problem, decisions, the hard part, results -->
+    <div class="prose-dark mt-4">
+      <Content />
+    </div>
+
+    <div class="mt-16">
+      <CTACard />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,134 @@
+---
+title: 'hookdrop: a webhook inspection and replay SaaS, launched solo'
+outcome: 'A webhook inspection and replay SaaS, designed, built, and launched solo.'
+role: 'Solo founder and engineer'
+timeline: '2025, ~4 months to launch'
+stack: ['Go', 'SQLite', 'SSE', 'HTMX', 'Paystack', 'LemonSqueezy', 'Hetzner', 'Cloudflare']
+tags: ['Go', 'SQLite', 'SSE', 'Paystack']
+liveUrl: 'https://hookdrop.dev'
+repoUrl: 'https://github.com/EOEboh/hookdrop'
+heroImage: '/images/work/hookdrop-hero.png'
+heroImageAlt: 'hookdrop dashboard showing a live stream of incoming webhook deliveries'
+featured: true
+flagship: true
+order: 1
+---
+
+## Problem and constraints
+
+Debugging webhooks is miserable. You stare at a provider dashboard that shows you a delivery failed, but not why. You add a log line, redeploy, trigger the event again, and hope. When the provider is a payment processor, "hope" is not a strategy.
+
+hookdrop fixes this loop. You create a named endpoint, point any provider at it, and every delivery is captured: headers, body, timing, signature. It verifies signatures against your secret, and you can replay any request against your real service with one click.
+
+I built it alone, under real constraints:
+
+- **Solo developer.** Every hour spent on infrastructure is an hour not spent on the product. Boring technology was a requirement, not a preference.
+- **Budget infra.** One Hetzner VPS behind Cloudflare. No managed database, no Kubernetes, no queue service.
+- **Regional payment rails.** Stripe was not an option for the account the product bills from. Billing had to work across Paystack for local cards and LemonSqueezy as merchant of record for international customers. Two providers, two webhook formats, two reconciliation paths, on day one.
+
+## Key decisions
+
+### SQLite over Postgres
+
+**Decision:** ship on SQLite in WAL mode, backed up continuously to Cloudflare R2.
+
+**Why:** the entire app runs on one node. SQLite removes a network hop, a connection pool, a managed service bill, and a whole class of operational failure. Reads are local. Backups are a file copy.
+
+**Tradeoff:** no horizontal scaling story, and write concurrency has a ceiling. For a webhook inspector where each user's traffic is modest, that ceiling is years away. If it arrives, that is a good problem.
+
+### SSE over WebSockets
+
+**Decision:** live delivery streams use Server-Sent Events, not WebSockets.
+
+**Why:** the stream is one-way. The server tells the browser "a new delivery arrived." The browser never needs to push. SSE is plain HTTP: it works through proxies, reconnects natively via `Last-Event-ID`, and needs no upgrade handshake or ping-pong plumbing.
+
+**Tradeoff:** no bidirectional channel if I ever need one, and a per-connection goroutine on the server. Both acceptable: replay actions go over normal POST requests, and goroutines are cheap.
+
+### Magic links and JWT over passwords
+
+**Decision:** no passwords. You get a signed link by email, which exchanges for a short-lived JWT.
+
+**Why:** less attack surface. No password storage, no reset flow, no credential stuffing exposure. For a developer tool used a few times a week, the login friction is fine.
+
+**Tradeoff:** email deliverability becomes a login dependency, so the email path gets monitoring like any critical system.
+
+### Rate limiting and signature verification from day one
+
+**Decision:** every public endpoint had a token-bucket rate limiter and signature verification before launch, not after.
+
+**Why:** hookdrop's core promise is "point your payment provider at me." That is exactly the kind of endpoint that gets abused. Retrofitting abuse protection after an incident is far more expensive than building it in.
+
+**Tradeoff:** a week of pre-launch time spent on code no user would ever praise. Worth it the first time a misconfigured client sent 4,000 requests in a minute.
+
+![Architecture: Cloudflare in front of a single Hetzner VPS running the Go binary, SQLite in WAL mode on local disk, continuous backups to R2](/images/work/hookdrop-architecture.svg)
+
+## The hard part: Paystack's shape-shifting JSON
+
+Go's `encoding/json` is strict, and that is normally a feature. Then I met a Paystack response where the same field is sometimes a string and sometimes an object.
+
+When you verify a transaction, `data.authorization` is usually an object with card details. But on certain transaction states, the API returns it as a plain string. Same endpoint, same field name, different JSON type. My decoder did exactly what it should:
+
+```go
+// json: cannot unmarshal string into Go struct field
+// verifyResponse.data.authorization of type paystack.Authorization
+```
+
+In production this looked like random billing verification failures. Maybe 1 in 40 verifications died, always for the same handful of users, with no obvious pattern in the request. The fix only became clear after I logged the raw response body for failing calls and diffed it against a succeeding one. The failing payloads had `"authorization": "AUTH_xxxx"` where the passing ones had an object.
+
+The fix is a custom `UnmarshalJSON` that sniffs the first byte and handles both shapes:
+
+```go
+type Authorization struct {
+	Code     string `json:"authorization_code"`
+	CardType string `json:"card_type"`
+	Last4    string `json:"last4"`
+	Bank     string `json:"bank"`
+	// only set when the API sent the string form
+	RawCode string `json:"-"`
+}
+
+func (a *Authorization) UnmarshalJSON(b []byte) error {
+	b = bytes.TrimSpace(b)
+	if len(b) == 0 || string(b) == "null" {
+		return nil
+	}
+
+	// String form: "AUTH_xxxx". Keep the code, leave card fields empty.
+	if b[0] == '"' {
+		var code string
+		if err := json.Unmarshal(b, &code); err != nil {
+			return fmt.Errorf("authorization string form: %w", err)
+		}
+		a.RawCode = code
+		a.Code = code
+		return nil
+	}
+
+	// Object form. Alias type avoids infinite recursion into this method.
+	type alias Authorization
+	var full alias
+	if err := json.Unmarshal(b, &full); err != nil {
+		return fmt.Errorf("authorization object form: %w", err)
+	}
+	*a = Authorization(full)
+	return nil
+}
+```
+
+Two lessons came out of this. First, when you integrate a payment API, log raw bodies on decode failure from the start; the error message alone will never tell you the payload changed shape. Second, treat provider API docs as a suggestion and the wire format as the truth.
+
+### The limitation I ship with
+
+Honesty section: hookdrop replays requests from its own server. If your service runs on `localhost:3000` during development, the replay cannot reach it. Outbound requests from a VPS do not route into your laptop. Today the workaround is deploying to a staging URL or using any tunnel you already have. The real fix is a small CLI that opens a tunnel and receives replays locally, and it is the next thing on the roadmap. I would rather state that plainly than pretend the gap does not exist.
+
+## Results and lessons
+
+- **49 registered users at launch**, with zero paid marketing. Every one came from posts on X and TikTok.
+- **Zero downtime** through launch week on a single VPS.
+- **Billing events flowed through both providers** in the first week, and reconciliation matched on both.
+
+What I took away:
+
+1. **Boring infrastructure is a launch strategy.** SQLite plus one VPS meant launch week was about users, not incidents.
+2. **Distribution is built before the product.** The audience I had been teaching for a year was the entire launch channel. The product took four months; the trust took much longer.
+3. **Disclose your limitations before users find them.** The localhost replay gap is in the docs, phrased exactly as it works. Nobody has churned over it; several people replied that the honesty is why they signed up.

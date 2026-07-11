@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/Button.astro';
+---
+
+<BaseLayout title="404 · Page not found">
+  <section class="mx-auto flex max-w-6xl flex-col items-start gap-6 px-5 py-32 sm:px-8">
+    <p class="font-mono text-sm text-fg-muted">
+      <span class="text-accent">$</span> cat {'{page}'}
+    </p>
+    <h1 class="text-hero font-bold text-fg">
+      404: no such file<span class="cursor-blink" aria-hidden="true"></span>
+    </h1>
+    <p class="max-w-md text-lg text-fg-secondary">
+      That page does not exist. It may have moved, or it never shipped.
+    </p>
+    <Button href="/">Back to home</Button>
+  </section>
+</BaseLayout>

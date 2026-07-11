@@ -1,0 +1,53 @@
+<svg width="1200" height="420" viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="hookdrop architecture diagram">
+  <title>hookdrop architecture: providers send webhooks through Cloudflare to a single Hetzner VPS running one Go binary with SQLite, backed up to R2, streaming to browsers over SSE</title>
+  <rect width="1200" height="420" fill="#0a0a0b"/>
+
+  <!-- Providers -->
+  <rect x="40" y="150" width="180" height="120" rx="10" fill="#121214" stroke="rgba(255,255,255,0.12)"/>
+  <text x="130" y="195" font-family="Menlo, monospace" font-size="15" fill="#ededef" text-anchor="middle">Providers</text>
+  <text x="130" y="222" font-family="Menlo, monospace" font-size="12" fill="#6b6b74" text-anchor="middle">Paystack, GitHub,</text>
+  <text x="130" y="242" font-family="Menlo, monospace" font-size="12" fill="#6b6b74" text-anchor="middle">any webhook source</text>
+
+  <!-- Arrow 1 -->
+  <line x1="220" y1="210" x2="300" y2="210" stroke="#d4a257" stroke-width="2"/>
+  <polygon points="300,204 312,210 300,216" fill="#d4a257"/>
+  <text x="262" y="196" font-family="Menlo, monospace" font-size="11" fill="#6b6b74" text-anchor="middle">POST</text>
+
+  <!-- Cloudflare -->
+  <rect x="316" y="150" width="180" height="120" rx="10" fill="#121214" stroke="rgba(255,255,255,0.12)"/>
+  <text x="406" y="200" font-family="Menlo, monospace" font-size="15" fill="#ededef" text-anchor="middle">Cloudflare</text>
+  <text x="406" y="228" font-family="Menlo, monospace" font-size="12" fill="#6b6b74" text-anchor="middle">TLS, DNS, caching</text>
+
+  <!-- Arrow 2 -->
+  <line x1="496" y1="210" x2="576" y2="210" stroke="#d4a257" stroke-width="2"/>
+  <polygon points="576,204 588,210 576,216" fill="#d4a257"/>
+
+  <!-- VPS -->
+  <rect x="592" y="70" width="320" height="280" rx="10" fill="#121214" stroke="rgba(255,255,255,0.12)"/>
+  <text x="752" y="105" font-family="Menlo, monospace" font-size="14" fill="#a0a0a8" text-anchor="middle">Hetzner VPS (single node)</text>
+
+  <rect x="622" y="130" width="260" height="80" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.1)"/>
+  <text x="752" y="165" font-family="Menlo, monospace" font-size="14" fill="#ededef" text-anchor="middle">Go binary</text>
+  <text x="752" y="190" font-family="Menlo, monospace" font-size="11" fill="#6b6b74" text-anchor="middle">ingest · verify · rate limit · replay</text>
+
+  <rect x="622" y="240" width="260" height="70" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.1)"/>
+  <text x="752" y="270" font-family="Menlo, monospace" font-size="14" fill="#ededef" text-anchor="middle">SQLite (WAL)</text>
+  <text x="752" y="292" font-family="Menlo, monospace" font-size="11" fill="#6b6b74" text-anchor="middle">local disk</text>
+
+  <line x1="752" y1="210" x2="752" y2="240" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+
+  <!-- R2 backup -->
+  <rect x="980" y="240" width="180" height="80" rx="10" fill="#121214" stroke="rgba(255,255,255,0.12)"/>
+  <text x="1070" y="275" font-family="Menlo, monospace" font-size="14" fill="#ededef" text-anchor="middle">Cloudflare R2</text>
+  <text x="1070" y="298" font-family="Menlo, monospace" font-size="11" fill="#6b6b74" text-anchor="middle">continuous backups</text>
+  <line x1="882" y1="277" x2="968" y2="277" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-dasharray="6 6"/>
+  <polygon points="968,271 980,277 968,283" fill="rgba(255,255,255,0.3)"/>
+
+  <!-- SSE to browser -->
+  <rect x="980" y="110" width="180" height="80" rx="10" fill="#121214" stroke="rgba(255,255,255,0.12)"/>
+  <text x="1070" y="145" font-family="Menlo, monospace" font-size="14" fill="#ededef" text-anchor="middle">Browser</text>
+  <text x="1070" y="168" font-family="Menlo, monospace" font-size="11" fill="#6b6b74" text-anchor="middle">live dashboard</text>
+  <line x1="882" y1="150" x2="968" y2="150" stroke="#d4a257" stroke-width="2"/>
+  <polygon points="968,144 980,150 968,156" fill="#d4a257"/>
+  <text x="925" y="136" font-family="Menlo, monospace" font-size="11" fill="#6b6b74" text-anchor="middle">SSE</text>
+</svg>

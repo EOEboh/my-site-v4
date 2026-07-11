@@ -1,0 +1,186 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/Button.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
+import TerminalWindow from '@/components/TerminalWindow.astro';
+import MetricCard from '@/components/MetricCard.astro';
+import WorkCard from '@/components/WorkCard.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import WritingRow from '@/components/WritingRow.astro';
+import { site, links, hero, metrics, services, contact } from '@/config/site';
+
+const work = (await getCollection('work', ({ data }) => data.featured && !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const flagship = work.find((entry) => entry.data.flagship);
+const secondary = work.filter((entry) => !entry.data.flagship).slice(0, 2);
+
+const writing = (await getCollection('writing', ({ data }) => data.featured && !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 4);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  alternateName: site.handle,
+  url: site.url,
+  email: `mailto:${site.email}`,
+  jobTitle: 'Senior Software Engineer',
+  knowsAbout: ['Go', 'Distributed Systems', 'Payments Infrastructure', 'Backend Engineering'],
+  sameAs: [links.x, links.github, links.linkedin, links.tiktok, links.youtube],
+};
+---
+
+<BaseLayout jsonLd={jsonLd}>
+  <!-- Hero -->
+  <section class="mx-auto max-w-6xl px-5 pt-20 pb-16 sm:px-8 sm:pt-28 sm:pb-24">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+      <div class="flex flex-col gap-7">
+        <h1 class="text-hero font-bold text-fg">
+          {hero.headline}<span class="cursor-blink" aria-hidden="true"></span>
+        </h1>
+        <p class="max-w-xl text-lg leading-relaxed text-fg-secondary">{hero.subline}</p>
+        <div class="flex flex-wrap gap-3">
+          <Button href={links.bookCall} external>{hero.primaryCta}</Button>
+          <Button href={site.cvPath} variant="ghost">{hero.secondaryCta}</Button>
+        </div>
+      </div>
+
+      <TerminalWindow title="curl · hookdrop" class="fade-up">
+        <pre
+          class="whitespace-pre text-fg-secondary"><span class="text-accent">$</span> curl -N https://hookdrop.dev/e/pay-events/stream
+
+<span class="text-fg-muted">event:</span> delivery
+<span class="text-fg-muted">data:</span> &lbrace;"id":"dlv_8Kx2","source":"paystack",
+<span class="text-fg-muted">data:</span>  "event":"charge.success",
+<span class="text-fg-muted">data:</span>  "signature":"<span class="text-accent">verified</span>","status":201&rbrace;
+
+<span class="text-fg-muted">event:</span> delivery
+<span class="text-fg-muted">data:</span> &lbrace;"id":"dlv_8Kx3","source":"paystack",
+<span class="text-fg-muted">data:</span>  "event":"transfer.failed",
+<span class="text-fg-muted">data:</span>  "signature":"<span class="text-accent">verified</span>","status":201&rbrace;
+
+<span class="text-accent">$</span> hookdrop replay dlv_8Kx3 --to staging
+<span class="text-fg-muted">→ replayed in 84ms · 200 OK</span></pre>
+      </TerminalWindow>
+    </div>
+  </section>
+
+  <!-- Proof strip -->
+  <section class="border-y border-border bg-surface/40" aria-label="Track record">
+    <div class="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-5 py-10 sm:px-8 lg:grid-cols-4">
+      {metrics.map((metric) => <MetricCard value={metric.value} label={metric.label} />)}
+    </div>
+  </section>
+
+  <!-- Selected work -->
+  <section id="work" class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28">
+    <div class="flex flex-col gap-3">
+      <SectionLabel>selected-work</SectionLabel>
+      <h2 class="text-display font-bold text-fg">Work that shipped.</h2>
+    </div>
+    <div class="mt-10 flex flex-col gap-6">
+      {flagship && <WorkCard entry={flagship} flagship />}
+      <div class="grid gap-6 md:grid-cols-2">
+        {secondary.map((entry) => <WorkCard entry={entry} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section
+    id="services"
+    class="border-y border-border bg-surface/40"
+  >
+    <div class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28">
+      <div class="flex flex-col gap-3">
+        <SectionLabel>services</SectionLabel>
+        <h2 class="text-display font-bold text-fg">What I build for clients.</h2>
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          services.map((service) => (
+            <ServiceCard
+              title={service.title}
+              body={service.body}
+              engagement={service.engagement}
+            />
+          ))
+        }
+      </div>
+      <div class="mt-10 flex justify-center">
+        <Button href={links.bookCall} external>Start a project</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Writing -->
+  <section id="writing" class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28">
+    <div class="flex flex-col gap-3">
+      <SectionLabel>writing</SectionLabel>
+      <h2 class="text-display font-bold text-fg">Things I've explained.</h2>
+    </div>
+    <div class="mt-8 flex flex-col">
+      {writing.map((entry) => <WritingRow entry={entry} />)}
+    </div>
+    <p class="mt-8 text-sm text-fg-secondary">
+      Longer pieces land in my newsletter first.
+      <a
+        href={links.substack}
+        target="_blank"
+        rel="noopener"
+        class="font-mono text-accent transition-colors hover:text-accent-bright"
+      >
+        Subscribe on Substack ↗
+      </a>
+    </p>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="border-t border-border bg-surface/40">
+    <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+      <div class="flex flex-col gap-3">
+        <SectionLabel>contact</SectionLabel>
+        <h2 class="text-display font-bold text-fg">Two ways to work with me.</h2>
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        <div class="card-interactive fade-up flex flex-col gap-4 rounded-xl p-7 sm:p-9">
+          <h3 class="text-xl font-bold tracking-tight text-fg">{contact.hiring.heading}</h3>
+          <p class="text-sm leading-relaxed text-fg-secondary">{contact.hiring.body}</p>
+          <div class="mt-auto flex flex-wrap gap-3 pt-4">
+            <Button href={site.cvPath} variant="ghost">Download CV</Button>
+            <a
+              href={links.linkedin}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center px-2 py-3 font-mono text-sm text-fg-secondary transition-colors hover:text-fg"
+            >
+              LinkedIn ↗
+            </a>
+            <a
+              href={`mailto:${site.email}`}
+              class="inline-flex items-center px-2 py-3 font-mono text-sm text-fg-secondary transition-colors hover:text-fg"
+            >
+              Email
+            </a>
+          </div>
+        </div>
+        <div class="card-interactive fade-up flex flex-col gap-4 rounded-xl p-7 sm:p-9">
+          <h3 class="text-xl font-bold tracking-tight text-fg">{contact.project.heading}</h3>
+          <p class="text-sm leading-relaxed text-fg-secondary">{contact.project.body}</p>
+          <div class="mt-auto flex flex-wrap gap-3 pt-4">
+            <Button href={links.bookCall} external>Book a call</Button>
+            <a
+              href={`mailto:${site.email}`}
+              class="inline-flex items-center px-2 py-3 font-mono text-sm text-fg-secondary transition-colors hover:text-fg"
+            >
+              or email me
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import { site, links, footer } from '@/config/site';
+
+const socials = [
+  { label: 'X', href: links.x },
+  { label: 'GitHub', href: links.github },
+  { label: 'TikTok', href: links.tiktok },
+  { label: 'YouTube', href: links.youtube },
+  { label: 'LinkedIn', href: links.linkedin },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border">
+  <div class="mx-auto max-w-6xl px-5 py-12 sm:px-8">
+    <p class="font-mono text-sm text-fg-secondary">
+      <span class="text-accent">{footer.prompt.split('$')[0]}$</span>{footer.prompt.split('$')[1]}
+      <span class="cursor-blink" aria-hidden="true"></span>
+    </p>
+
+    <div class="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+      <ul class="flex flex-wrap gap-x-5 gap-y-2">
+        {
+          socials.map((social) => (
+            <li>
+              <a
+                href={social.href}
+                target="_blank"
+                rel="noopener"
+                class="font-mono text-[13px] text-fg-muted transition-colors hover:text-fg"
+              >
+                {social.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="font-mono text-[13px] text-fg-muted">
+        © {year} {site.name} · {site.brand}
+      </p>
+    </div>
+  </div>
+</footer>
