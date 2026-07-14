@@ -12,9 +12,9 @@ export const site = {
   title: 'Emmanuel O. Eboh · Backend & Payments Infrastructure',
   description:
     'Senior software engineer. Go, distributed systems, fintech. I design, build, and launch backend and payments infrastructure.',
-  url: 'https://capeolabs.com', // TODO: set the real production domain
+  url: 'https://capeodev.com',
   email: 'emmanueleboh87@gmail.com',
-  cvPath: '/cv/emmanuel-eboh-cv.pdf', // TODO: drop the real CV pdf at public/cv/
+  cvPath: '/cv/Emmanuel_O_Eboh_Senior_Backend_Engineer.pdf', 
 } as const;
 
 export const links = {
@@ -23,7 +23,7 @@ export const links = {
   linkedin: 'https://www.linkedin.com/in/emmanuel-eboh', 
   x: 'https://x.com/EOEboh', 
   github: 'https://github.com/EOEboh',
-  tiktok: 'https://www.tiktok.com/@eo_eboh', // TODO: verify handle
+  tiktok: 'https://www.tiktok.com/@eo_eboh', 
   // youtube: 'https://www.youtube.com/@cap_eo', 
 } as const;
 
@@ -36,10 +36,10 @@ export const hero = {
 } as const;
 
 export const metrics = [
+  { value: '6+', label: 'years of production experience' },
+  { value: '10+', label: 'SaaS and AI agents released' },
   { value: '20K+', label: 'audience across X and TikTok' },
-  { value: '1', label: 'SaaS shipped solo: hookdrop' },
-  { value: '10', label: 'AI projects taught in a live bootcamp' },
-  { value: '5+', label: 'years focused on backend' },
+  { value: '3', label: 'awards won' },
 ] as const;
 
 export const services = [
@@ -62,8 +62,8 @@ export const services = [
 
 export const contact = {
   hiring: {
-    heading: 'Hiring for a backend or fintech role?',
-    body: 'I bring production Go experience, payments domain depth, and a track record of shipping alone or in a team.',
+    heading: 'Hiring for a backend or full-stack role?',
+    body: 'I bring production Go, Java and JavaScript experience, system design skills, and a track record of shipping both alone and in a team.',
   },
   project: {
     heading: 'Need something built?',
