@@ -9,7 +9,7 @@ export const site = {
   name: 'Emmanuel O. Eboh',
   brand: 'CapEO Labs',
   handle: 'EOEboh',
-  title: 'Emmanuel O. Eboh · Backend & Payments Infrastructure',
+  title: 'Emmanuel O. Eboh · Senior Backend and Full-Stack Engineer',
   description:
     'Senior software engineer. Go, distributed systems, fintech. I design, build, and launch backend and payments infrastructure.',
   url: 'https://capeodev.com',
