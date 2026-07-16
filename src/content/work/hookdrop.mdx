@@ -1,14 +1,13 @@
 ---
-title: 'hookdrop: a webhook inspection and replay SaaS, launched solo'
-outcome: 'A webhook inspection and replay SaaS, designed, built, and launched solo.'
+title: 'hookdrop: webhook debugging SaaS, 49 users at launch with zero paid marketing'
+outcome: 'Webhook inspection and replay SaaS, shipped solo: 49 users at launch with zero paid marketing.'
 role: 'Solo founder and engineer'
-timeline: '2025, ~4 months to launch'
 stack: ['Go', 'SQLite', 'SSE', 'HTMX', 'Paystack', 'LemonSqueezy', 'Hetzner', 'Cloudflare']
 tags: ['Go', 'SQLite', 'SSE', 'Paystack']
-liveUrl: 'https://hookdrop.dev'
+liveUrl: 'https://hookdrop.app'
 repoUrl: 'https://github.com/EOEboh/hookdrop'
-heroImage: '/images/work/hookdrop-hero.png'
-heroImageAlt: 'hookdrop dashboard showing a live stream of incoming webhook deliveries'
+heroImage: '/images/work/hookdrop-img.png'
+heroImageAlt: 'hookdrop dashboard streaming incoming webhook deliveries live, each with source, event type, and verified signature'
 featured: true
 flagship: true
 order: 1
@@ -40,7 +39,7 @@ I built it alone, under real constraints:
 
 **Decision:** live delivery streams use Server-Sent Events, not WebSockets.
 
-**Why:** the stream is one-way. The server tells the browser "a new delivery arrived." The browser never needs to push. SSE is plain HTTP: it works through proxies, reconnects natively via `Last-Event-ID`, and needs no upgrade handshake or ping-pong plumbing.
+**Why:** the stream is one-way: the server announces new deliveries, the browser never pushes. SSE is plain HTTP: it works through proxies, reconnects natively via `Last-Event-ID`, and needs no upgrade handshake or ping-pong plumbing.
 
 **Tradeoff:** no bidirectional channel if I ever need one, and a per-connection goroutine on the server. Both acceptable: replay actions go over normal POST requests, and goroutines are cheap.
 
@@ -119,7 +118,7 @@ Two lessons came out of this. First, when you integrate a payment API, log raw b
 
 ### The limitation I ship with
 
-Honesty section: hookdrop replays requests from its own server. If your service runs on `localhost:3000` during development, the replay cannot reach it. Outbound requests from a VPS do not route into your laptop. Today the workaround is deploying to a staging URL or using any tunnel you already have. The real fix is a small CLI that opens a tunnel and receives replays locally, and it is the next thing on the roadmap. I would rather state that plainly than pretend the gap does not exist.
+hookdrop replays requests from its own server. If your service runs on `localhost:3000` during development, the replay can't reach it: outbound requests from a VPS don't route into your laptop. Today the workaround is a staging URL or any tunnel you already have. The fix is a small CLI that opens a tunnel and receives replays locally, and it's next on the roadmap. I'd rather tell you now than let you find it mid-debug.
 
 ## Results and lessons
 

@@ -7,7 +7,6 @@ const work = defineCollection({
     title: z.string(),
     outcome: z.string(), // one-liner shown on cards
     role: z.string(),
-    timeline: z.string(),
     stack: z.array(z.string()),
     tags: z.array(z.string()), // short tech tags for cards
     liveUrl: z.string().url().optional(),

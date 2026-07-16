@@ -19,13 +19,13 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, outcome, role, timeline, stack, liveUrl, repoUrl, heroImage, heroImageAlt } =
+const { title, outcome, role, stack, liveUrl, repoUrl, heroImage, heroImageAlt } =
   entry.data;
 const { Content } = await render(entry);
 
 const meta = [
   { label: 'role', value: role },
-  { label: 'timeline', value: timeline },
+
 ];
 ---
 
