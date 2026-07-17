@@ -14,7 +14,7 @@ export const site = {
     'Go backend and payments engineer. Solo-shipped hookdrop, a live webhook debugging SaaS, and teaches 20,000+ developers how backends actually work.',
   url: 'https://capeodev.com',
   email: 'hi@capeodev.com',
-  cvPath: '/cv/Emmanuel_O_Eboh_Senior_Backend_Engineer.pdf', 
+  cvPath: '/cv/Emmanuel_O_Eboh_Senior_Software_Engineer.pdf', 
 } as const;
 
 export const links = {
@@ -27,12 +27,7 @@ export const links = {
   youtube: 'https://youtube.com/@capeolabs?si=5Z3GRhdx4mHssI6G', 
 } as const;
 
-/**
- * Headline drafts (under 12 words, must contain "Go" plus fintech/payments/backend):
- * 1. "I build Go backends and payments infrastructure that don't fall over." (implemented: keeps the signature line, adds Go)
- * 2. "Payments infrastructure in Go for fintechs that can't afford failed webhooks."
- * 3. "Go backend and payments engineering for fintech teams and founders."
- */
+
 export const hero = {
   headline: "I build Go backends and e-commerce infrastructure that don't fall over.",
   subline:
@@ -79,5 +74,5 @@ export const contact = {
 } as const;
 
 export const footer = {
-  prompt: 'captain@capeo:~$ echo "let\'s build"',
+  prompt: 'macbook@CapEO:~$ echo "let\'s build"',
 } as const;
