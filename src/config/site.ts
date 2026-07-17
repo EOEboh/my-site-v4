@@ -13,18 +13,18 @@ export const site = {
   description:
     'Go backend and payments engineer. Solo-shipped hookdrop, a live webhook debugging SaaS, and teaches 20,000+ developers how backends actually work.',
   url: 'https://capeodev.com',
-  email: 'emmanueleboh87@gmail.com',
+  email: 'hi@capeodev.com',
   cvPath: '/cv/Emmanuel_O_Eboh_Senior_Backend_Engineer.pdf', 
 } as const;
 
 export const links = {
   bookCall: 'https://cal.com/capeolabs/30min', 
-  // substack: 'https://capeo.substack.com', 
+  substack: 'https://capeolabs.substack.com/', 
   linkedin: 'https://www.linkedin.com/in/emmanuel-eboh', 
   x: 'https://x.com/EOEboh', 
   github: 'https://github.com/EOEboh',
   tiktok: 'https://www.tiktok.com/@eo_eboh', 
-  // youtube: 'https://www.youtube.com/@cap_eo', 
+  youtube: 'https://youtube.com/@capeolabs?si=5Z3GRhdx4mHssI6G', 
 } as const;
 
 /**
@@ -52,17 +52,17 @@ export const metrics = [
 export const services = [
   {
     title: 'Backend and API development',
-    body: 'Your product is outgrowing its backend, or your API keeps surprising the team that consumes it. I build production services in Go or Node.js: tested, documented, and instrumented, so your frontend and your customers can depend on them.',
+    body: 'Your product is outgrowing its backend, or your API keeps surprising the team that consumes it. I build production services in Go, Java or Node.js: tested, documented, and instrumented, so your frontend and your customers can depend on them.',
     engagement: '2 to 6 weeks',
   },
   {
-    title: 'Payments integration',
-    body: 'Billing bugs cost you money and user trust, and every provider has quirks its docs never mention. I ship Paystack, LemonSqueezy, and Stripe integrations: billing flows, webhook handling, retries, and reconciliation built for what providers actually send.',
+    title: 'AI and automation',
+    body: 'Your product is repetitive, or your team is spending too much time on manual work. I build AI and automation solutions: from chatbots to workflow automation, so your team can focus on what matters most.',
     engagement: '1 to 4 weeks',
   },
   {
-    title: 'Developer tooling and SDKs',
-    body: 'Your API works, but integrating it is a slog and your support tickets prove it. I build CLIs, SDKs, and internal tools with clear errors, sane defaults, and documentation engineers actually read.',
+    title: 'Product and developer experience',
+    body: 'Your product is hard to use, or your API is hard to integrate. I build and improve user interfaces and developer experiences: intuitive and accessible, so your users and integrators can get the most out of your product.',
     engagement: '2 to 5 weeks',
   },
 ] as const;

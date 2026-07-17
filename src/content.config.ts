@@ -17,6 +17,7 @@ const work = defineCollection({
     flagship: z.boolean().default(false), // full-width card on homepage
     order: z.number().default(99),
     draft: z.boolean().default(false),
+    inProgress: z.boolean().default(false), // placeholder page until the write-up is ready
   }),
 });
 

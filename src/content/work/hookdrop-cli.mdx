@@ -1,29 +1,43 @@
 ---
-title: 'Auqli Store: traditional and live shopping e-commerce store'
-outcome: 'Browse products, scroll short blips, join live seller sessions through the app'
+title: 'Hookdrop CLI: terminal-first webhook debugging for local development'
+outcome: 'Stream webhooks live from the terminal, inspect payloads instantly, and forward them to local services for testing'
 role: 'Product Owner/Engineer'
-stack: ['Node.js', 'React', 'Vite', 'MongoDB']
-tags: ['TypeScript', 'Node.js', 'Vite']
-repoUrl: 'https://github.com/EOEboh/bootcamp-capstone'
-heroImage: '/images/work/auqli-img.png'
-heroImageAlt: 'Capstone app chat interface answering a prompt from a locally hosted Ollama model'
+stack: ['Go', 'Cobra', 'OAuth']
+tags: ['Go', 'CLI', 'Developer Tools']
+repoUrl: 'https://github.com/EOEboh/hookdrop/tree/main/cli'
+heroImage: '/images/work/cli-img.png'
+heroImageAlt: 'Hookdrop CLI streaming webhook events in a terminal'
 featured: true
 flagship: false
-order: 3
+order: 4
 ---
 
 ## Problem and constraints
 
-TODO: teaching 10 AI projects live, why the capstone had to run on local models (Ollama) instead of paid APIs, and the constraint of code every student could run on a laptop.
+Webhook debugging is often painful because events arrive on a hosted backend, not on the developer’s laptop. That makes it hard to test integrations against local services, especially when a provider needs to reach a private app behind a firewall or a dev environment that is not publicly exposed. The CLI had to give developers a fast, reliable way to observe incoming webhooks in real time, forward them to a local endpoint, and stay simple enough to use from a terminal without extra setup.
 
 ## Key decisions
 
-TODO: 3 to 5 decisions in Decision, Why, Tradeoff format. Candidates: Ollama over hosted APIs, HTMX over a JS framework for teachability, Go standard library over frameworks.
+- Decision: Build a terminal-first experience instead of a browser-based debugger.  
+  Why: Developers already live in the terminal when they are debugging integrations, and a lightweight CLI keeps the workflow fast and familiar.  
+  Tradeoff: The experience is less visual than a full dashboard, but it is far easier to use in everyday development.
+
+- Decision: Use Go with Cobra for the CLI.  
+  Why: Go produces small, cross-platform binaries that are easy to install and ship, which matters a lot for a developer tool.  
+  Tradeoff: The implementation is more structured than a quick script, but the payoff is reliability and distribution.
+
+- Decision: Support local forwarding as a core feature.  
+  Why: The most valuable use case was not only seeing the webhook, but also replaying it to a local server that the hosted backend could not reach directly.  
+  Tradeoff: Developers need to run a local service, but the result is a much more realistic testing loop.
+
+- Decision: Use account-based authentication with token and config support.  
+  Why: It keeps the CLI secure while still making it practical to sign in once and use the tool repeatedly.  
+  Tradeoff: There is a small setup step, but it is far simpler than managing manual credentials for every session.
 
 ## The hard part
 
-TODO: one war story in depth. Candidate: streaming model output to the browser while keeping the code simple enough to teach.
+One of the hardest parts was making forwarding feel faithful to the original request without introducing subtle bugs. Webhooks often carry signatures, custom headers, and raw body content that are easy to alter accidentally. The CLI had to stream each payload live, preserve the important headers, and forward the request to a local server without breaking the signature or changing the payload semantics. That required careful handling of headers and transport behavior so the experience felt trustworthy rather than “close enough.”
 
 ## Results and lessons
 
-TODO: student completion numbers, what shipped, 2 to 3 lessons about teaching engineering live.
+The CLI shipped with account login, endpoint discovery, live webhook listening, local forwarding, and a simple installation path across major platforms. It gave developers a practical way to test integrations end to end without exposing local services to the public internet. The biggest lesson was that developer tools win when they stay focused: a short path from “sign in” to “see the webhook” to “forward it locally” mattered more than adding lots of extra features.

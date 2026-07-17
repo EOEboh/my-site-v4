@@ -19,7 +19,7 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, outcome, role, stack, liveUrl, repoUrl, heroImage, heroImageAlt } =
+const { title, outcome, role, stack, liveUrl, repoUrl, heroImage, heroImageAlt, inProgress } =
   entry.data;
 const { Content } = await render(entry);
 
@@ -52,7 +52,7 @@ const meta = [
       </dl>
 
       {
-        (liveUrl || repoUrl) && (
+        !inProgress && (liveUrl || repoUrl) && (
           <p class="flex flex-wrap gap-5 font-mono text-sm">
             {liveUrl && (
               <a
@@ -79,7 +79,7 @@ const meta = [
       }
 
       {
-        heroImage && (
+        !inProgress && heroImage && (
           <img
             src={heroImage}
             alt={heroImageAlt ?? ''}
