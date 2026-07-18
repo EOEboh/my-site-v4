@@ -1,13 +1,12 @@
 ---
-title: 'agent-skills: shareable agentic AI skills for Claude Code'
-outcome: 'Open source library of shareable agentic AI skills for Claude Code.'
+title: 'agent-skills: open source Claude Code skills, portable across machines and teams'
+outcome: 'Open source library of Claude Code skills that stay portable across machines and teams.'
 role: 'Author and maintainer'
-timeline: '2025, ongoing'
 stack: ['Markdown', 'Claude Code', 'Shell']
 tags: ['Open source', 'Claude Code', 'AI tooling']
 repoUrl: 'https://github.com/EOEboh/agent-skills'
 heroImage: '/images/work/agent-skills-hero.png'
-heroImageAlt: 'agent-skills repository readme showing the skill catalog'
+heroImageAlt: 'agent-skills repository README listing the catalog of installable Claude Code skills'
 featured: true
 flagship: false
 order: 2
@@ -15,16 +14,82 @@ order: 2
 
 ## Problem and constraints
 
-TODO: why shareable skills needed to exist, what was missing in the Claude Code workflow, and the constraint of keeping skills portable across machines and teams.
+Every coding agent session starts with the same argument. Don't tell me it works before you've run the tests. Don't jump to a plausible fix before you've reproduced the bug. Don't commit half the working tree with a vague message. You can write these rules into a `CLAUDE.md`, but that file belongs to one repo. Switch projects, switch machines, or hand the setup to a teammate, and the discipline evaporates.
+
+agent-skills fixes that. It is a library of Claude Code skills — plain Markdown playbooks the agent loads into context automatically — that install with one script and travel with you, not with the repo.
+
+The constraints were self-imposed but strict:
+
+- **Portable by construction.** Clone, run one script, done. Any step beyond that and people (including me) won't keep it in sync across machines.
+- **Two runtimes, one library.** Claude Code scans `~/.claude/skills/<name>/SKILL.md` exactly one level deep; Codex CLI scans `~/.codex/skills` recursively. The same repo had to serve both without duplication.
+- **Zero lock-in.** Every skill had to stay readable as a plain file — useful to an agent that scans skill folders, and still useful to one that doesn't.
 
 ## Key decisions
 
-TODO: 3 to 5 decisions in Decision, Why, Tradeoff format. Candidates: plain Markdown over a custom format, one skill per file, how triggers are worded, versioning approach.
+### Plain Markdown over a custom format
 
-## The hard part
+**Decision:** a skill is a folder with one `SKILL.md`: a two-field YAML header (`name`, `description`) and a Markdown body of rules and checklists.
 
-TODO: one war story in depth. Candidate: getting skill triggers to fire reliably without over-triggering.
+**Why:** agents read Markdown natively, and so do humans. No build step, no DSL, no registry. The entire library can be audited in ten minutes, which matters when the content is instructions an agent will follow with your codebase.
+
+**Tradeoff:** nothing validates the format. A malformed header doesn't error — the skill silently never loads. Convention has to carry what a schema would normally enforce.
+
+### Symlinks over copies
+
+**Decision:** the installer symlinks skills into place instead of copying them.
+
+**Why:** a copy starts drifting the moment it lands. With links, `git pull` updates every installed skill on that machine instantly — there is no second sync step to forget.
+
+**Tradeoff:** conflicts need human judgment. The installer never clobbers: a real file or a foreign link at the destination gets a `[skip]` and an explanation, and each link operation reports created, already-linked, or conflict separately so re-runs are idempotent and honest.
+
+### Generic core, per-repo overlay
+
+**Decision:** the shared skills stay deliberately generic. Project-specific checks live in a `.autoreview.md` file in each repo's root, which the autoreview skill looks for and layers on top of its universal checklist.
+
+**Why:** the moment a shared skill mentions one project's webhook signature checks or migration rules, it stops being shareable. Drawing the boundary at "universal in the library, specific in the repo" is what keeps the library portable across teams.
+
+**Tradeoff:** the behavior for a given repo now lives in two files instead of one, and the skill has to report which mode it ran in ("no project-specific rules found — ran universal checks only") so the gap is never silent.
+
+### One installer, two scan models
+
+**Decision:** a single `install.sh` encodes both runtimes' discovery rules — one flat link per skill for Claude Code, one whole-root link for Codex CLI.
+
+**Why:** the differences between runtimes belong in the installer, written down once, not in each user's head. The script even pre-creates the Codex link when Codex isn't installed yet: a dangling-but-correct link is harmless and means zero re-setup later.
+
+**Tradeoff:** portable shell is its own tax. macOS ships a `readlink` with no GNU-style `-f`, so the script walks symlink chains by hand before it can compare paths reliably.
+
+## The hard part: descriptions that fire, not spam
+
+The `description` field looks like documentation. It is not. It is the trigger: the agent matches it against what it's currently doing to decide whether to pull the skill into context. Getting that one sentence right was the hardest part of the project, because both failure modes are silent.
+
+Write it too narrow and the skill never fires — the discipline you wrote it for simply doesn't happen, and nothing tells you why. Write it too broad and it fires everywhere, loading checklist text into sessions that don't need it and numbing the agent to the instructions that do matter. My first autoreview description read like a README line: "A skill for reviewing code quality and verifying completed work." It matched almost nothing, because no working session *looks like* that sentence.
+
+What ended up working is a shape, not a phrase:
+
+```yaml
+---
+name: autoreview
+description: "Before declaring work done: review diff, run tests,
+  check project-specific rules."
+---
+```
+
+Lead with the *moment* the skill applies ("Before declaring work done"), then name the observable actions in plain verbs. The matcher is deciding "does this describe what is happening right now?" — so the description has to be written from inside the session, not from outside the repo. The same shape fixed debug-first ("Before fixing a bug: reproduce it, confirm root cause, write a failing test first") and commit-discipline.
+
+The second half of the fix lives in the body: every skill demands receipts, not promises. Autoreview's reporting format requires pasting the real test command and its real output — an agent can claim "tests pass" in a summary, but it can't paste output from a run that never happened. Wording the rules around observable evidence turned out to matter more than wording them forcefully.
+
+### The limitation I ship with
+
+Skills are advisory. They load instructions into context; they don't enforce anything. An agent under a tight token budget or an unusual prompt can still skip the checklist. The receipts-based reporting makes skipping visible rather than impossible — hard enforcement is what hooks are for, and pretending a Markdown file is a guardrail would be dishonest. It's in the README, phrased exactly that way.
 
 ## Results and lessons
 
-TODO: adoption numbers (stars, forks, users), what the open source process taught, 2 to 3 lessons.
+- **Three skills shipped** — autoreview, debug-first, commit-discipline — installed identically on every machine I work from. Updating all of them everywhere is one `git pull`.
+- **Two agent runtimes supported** from one repo, with an idempotent installer that has never needed a "clean reinstall".
+- **Open-sourced under MIT** in July 2026, with the same disclosure standard as everything I ship: the limitation is in the README before anyone hits it.
+
+What I took away:
+
+1. **Write for the matcher, not the reader.** A skill description is an API contract with the agent's relevance check. Prose that reads well to a human and prose that fires reliably are different artifacts.
+2. **The portability boundary is the product.** The interesting design work wasn't the checklists — it was deciding what stays generic in the library and what moves to a per-repo overlay. That line is what makes the thing shareable at all.
+3. **Demand receipts, not promises.** Rules phrased as "paste the real output" outperform rules phrased as "be thorough". The same lesson from hookdrop's billing debugging applies to agent behavior: the wire format is the truth.

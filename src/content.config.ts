@@ -7,7 +7,6 @@ const work = defineCollection({
     title: z.string(),
     outcome: z.string(), // one-liner shown on cards
     role: z.string(),
-    timeline: z.string(),
     stack: z.array(z.string()),
     tags: z.array(z.string()), // short tech tags for cards
     liveUrl: z.string().url().optional(),
@@ -18,6 +17,7 @@ const work = defineCollection({
     flagship: z.boolean().default(false), // full-width card on homepage
     order: z.number().default(99),
     draft: z.boolean().default(false),
+    inProgress: z.boolean().default(false), // placeholder page until the write-up is ready
   }),
 });
 

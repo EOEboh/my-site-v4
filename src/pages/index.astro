@@ -14,7 +14,7 @@ const work = (await getCollection('work', ({ data }) => data.featured && !data.d
   (a, b) => a.data.order - b.data.order,
 );
 const flagship = work.find((entry) => entry.data.flagship);
-const secondary = work.filter((entry) => !entry.data.flagship).slice(0, 2);
+const secondary = work.filter((entry) => !entry.data.flagship).slice(0, 4);
 
 const writing = (await getCollection('writing', ({ data }) => data.featured && !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -79,7 +79,7 @@ const jsonLd = {
   <section id="work" class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28">
     <div class="flex flex-col gap-3">
       <SectionLabel>selected-work</SectionLabel>
-      <h2 class="text-display font-bold text-fg">Work that shipped.</h2>
+      <h2 class="text-display font-bold text-fg">Latest work that shipped:</h2>
     </div>
     <div class="mt-10 flex flex-col gap-6">
       {flagship && <WorkCard entry={flagship} flagship />}
@@ -97,7 +97,7 @@ const jsonLd = {
     <div class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28">
       <div class="flex flex-col gap-3">
         <SectionLabel>services</SectionLabel>
-        <h2 class="text-display font-bold text-fg">What I build for clients.</h2>
+        <h2 class="text-display font-bold text-fg">What I build for clients:</h2>
       </div>
       <div class="mt-10 grid gap-6 md:grid-cols-3">
         {
@@ -111,7 +111,7 @@ const jsonLd = {
         }
       </div>
       <div class="mt-10 flex justify-center">
-        <Button href={links.bookCall} external>Start a project</Button>
+        <Button href={links.bookCall} external>Book a scoping call</Button>
       </div>
     </div>
   </section>
@@ -120,7 +120,7 @@ const jsonLd = {
   <section id="writing" class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28">
     <div class="flex flex-col gap-3">
       <SectionLabel>writing</SectionLabel>
-      <h2 class="text-display font-bold text-fg">Things I've explained.</h2>
+      <h2 class="text-display font-bold text-fg">How systems actually behave:</h2>
     </div>
     <div class="mt-8 flex flex-col">
       {writing.map((entry) => <WritingRow entry={entry} />)}
@@ -143,7 +143,7 @@ const jsonLd = {
     <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
       <div class="flex flex-col gap-3">
         <SectionLabel>contact</SectionLabel>
-        <h2 class="text-display font-bold text-fg">Two ways to work with me.</h2>
+        <h2 class="text-display font-bold text-fg">Two ways to work with me:</h2>
       </div>
       <div class="mt-10 grid gap-6 md:grid-cols-2">
         <div class="card-interactive fade-up flex flex-col gap-4 rounded-xl p-7 sm:p-9">
@@ -171,7 +171,7 @@ const jsonLd = {
           <h3 class="text-xl font-bold tracking-tight text-fg">{contact.project.heading}</h3>
           <p class="text-sm leading-relaxed text-fg-secondary">{contact.project.body}</p>
           <div class="mt-auto flex flex-wrap gap-3 pt-4">
-            <Button href={links.bookCall} external>Book a call</Button>
+            <Button href={links.bookCall} external>Book a 30-minute call</Button>
             <a
               href={`mailto:${site.email}`}
               class="inline-flex items-center px-2 py-3 font-mono text-sm text-fg-secondary transition-colors hover:text-fg"

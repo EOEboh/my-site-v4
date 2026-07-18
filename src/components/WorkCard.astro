@@ -10,7 +10,11 @@ interface Props {
 const { entry, flagship = false } = Astro.props;
 const { title, outcome, tags, heroImage, heroImageAlt } = entry.data;
 const href = `/work/${entry.id}/`;
-const linkText = flagship ? 'Read the build story' : 'Read the case study';
+const linkText = entry.data.inProgress
+  ? 'Case study in progress'
+  : flagship
+    ? 'Read the build story'
+    : 'Read the case study';
 ---
 
 {
