@@ -29,7 +29,7 @@ export const links = {
 
 
 export const hero = {
-  headline: "I build Go backends and e-commerce infrastructure that don't fall over.",
+  headline: "I build Go backends and AI infrastructure that don't fall over.",
   subline:
     'Six years shipping production backends in e-commerce, payments and AI. Built and still run hookdrop, a webhook debugging SaaS, and more other live projects. 20,000+ developers read my engineering breakdowns.',
   primaryCta: 'Book a 30-minute call',
