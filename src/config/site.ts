@@ -65,7 +65,7 @@ export const services = [
 export const contact = {
   hiring: {
     heading: 'Hiring for a senior backend or full-stack role?',
-    body: "You get production Go, Java, and JavaScript experience, system design depth, and a record of shipping solo and in teams. I'm open to senior and lead roles, remote or relocating with visa sponsorship. Reach out and I'll send my CV, tailored to the role.",
+    body: "You get production Go, Java, and JavaScript experience, system design depth, and a record of shipping solo and in teams. I'm open to senior and lead roles, remote or relocating with visa sponsorship. Reach out and I'll send you my CV",
   },
   project: {
     heading: 'Need something built?',
