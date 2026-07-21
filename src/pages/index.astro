@@ -44,7 +44,7 @@ const jsonLd = {
         <p class="max-w-xl text-lg leading-relaxed text-fg-secondary">{hero.subline}</p>
         <div class="flex flex-wrap gap-3">
           <Button href={links.bookCall} external>{hero.primaryCta}</Button>
-          <Button href={site.cvPath} variant="ghost">{hero.secondaryCta}</Button>
+          <Button href={links.requestCv} variant="ghost">{hero.secondaryCta}</Button>
         </div>
       </div>
 
@@ -150,15 +150,7 @@ const jsonLd = {
           <h3 class="text-xl font-bold tracking-tight text-fg">{contact.hiring.heading}</h3>
           <p class="text-sm leading-relaxed text-fg-secondary">{contact.hiring.body}</p>
           <div class="mt-auto flex flex-wrap gap-3 pt-4">
-            <Button href={site.cvPath} variant="ghost">Download CV</Button>
-            <a
-              href={links.linkedin}
-              target="_blank"
-              rel="noopener"
-              class="inline-flex items-center px-2 py-3 font-mono text-sm text-fg-secondary transition-colors hover:text-fg"
-            >
-              LinkedIn ↗
-            </a>
+            <Button href={links.requestCv} variant="ghost">Request CV</Button>
             <a
               href={`mailto:${site.email}`}
               class="inline-flex items-center px-2 py-3 font-mono text-sm text-fg-secondary transition-colors hover:text-fg"

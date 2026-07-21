@@ -14,17 +14,17 @@ export const site = {
     'Go backend and payments engineer. Solo-shipped hookdrop, a live webhook debugging SaaS, and teaches 20,000+ developers how backends actually work.',
   url: 'https://capeodev.com',
   email: 'hi@capeodev.com',
-  cvPath: '/cv/Emmanuel_O_Eboh_Senior_Software_Engineer.pdf', 
 } as const;
 
 export const links = {
-  bookCall: 'https://cal.com/capeolabs/30min', 
-  substack: 'https://capeolabs.substack.com/', 
-  linkedin: 'https://www.linkedin.com/in/emmanuel-eboh', 
-  x: 'https://x.com/EOEboh', 
+  bookCall: 'https://cal.com/capeolabs/30min',
+  substack: 'https://capeolabs.substack.com/',
+  linkedin: 'https://www.linkedin.com/in/emmanuel-eboh',
+  x: 'https://x.com/EOEboh',
   github: 'https://github.com/EOEboh',
-  tiktok: 'https://www.tiktok.com/@eo_eboh', 
-  youtube: 'https://youtube.com/@capeolabs?si=5Z3GRhdx4mHssI6G', 
+  tiktok: 'https://www.tiktok.com/@eo_eboh',
+  youtube: 'https://youtube.com/@capeolabs?si=5Z3GRhdx4mHssI6G',
+  requestCv: `mailto:${site.email}?subject=${encodeURIComponent('CV request')}`,
 } as const;
 
 
@@ -33,7 +33,7 @@ export const hero = {
   subline:
     'Six years shipping production backends in e-commerce, payments and AI. Built and still run hookdrop, ziga AI and more other live projects. 20,000+ developers read my engineering breakdowns.',
   primaryCta: 'Book a 30-minute call',
-  secondaryCta: 'Download CV',
+  secondaryCta: 'Request CV',
 } as const;
 
 export const metrics = [
@@ -65,7 +65,7 @@ export const services = [
 export const contact = {
   hiring: {
     heading: 'Hiring for a senior backend or full-stack role?',
-    body: "You get production Go, Java, and JavaScript experience, system design depth, and a record of shipping solo and in teams. I'm open to senior and lead roles, remote or relocating with visa sponsorship.",
+    body: "You get production Go, Java, and JavaScript experience, system design depth, and a record of shipping solo and in teams. I'm open to senior and lead roles, remote or relocating with visa sponsorship. Reach out and I'll send my CV, tailored to the role.",
   },
   project: {
     heading: 'Need something built?',

@@ -84,7 +84,6 @@ All placeholders are dark tiles marked `PLACEHOLDER`. Replace the file at the sa
 | Capstone screenshot | `public/images/work/bootcamp-capstone-hero.png` | 1600x900 |
 | Hero demo GIF slot (unused on v1, terminal component renders instead) | `public/images/hero-demo.png` | 1200x750 |
 | Default OG image | `public/og-default.png` | 1200x630 |
-| CV | `public/cv/emmanuel-eboh-cv.pdf` | one page PDF |
 
 Placeholder links marked `TODO` in `src/config/site.ts`: cal.com booking URL, Substack, LinkedIn, X, TikTok, YouTube handles, and the production domain (also update `site` in `astro.config.mjs` and `public/robots.txt`).
 
