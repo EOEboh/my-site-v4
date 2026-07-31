@@ -29,9 +29,9 @@ export const links = {
 
 
 export const hero = {
-  headline: "I build Go backends and AI infrastructure that don't fall over.",
+  headline: "I build Go backends and LLM systems that don't fall over.",
   subline:
-    'Six years shipping production backends in e-commerce, payments and AI. Built and still run hookdrop, ziga AI and more other live projects. 20,000+ developers read my engineering breakdowns.',
+    'Six years shipping production systems in e-commerce, payments, and AI. I built hookdrop and Ziga Data, and I still run them. 20,000+ developers read my engineering breakdowns.',
   primaryCta: 'Book a 30-minute call',
   secondaryCta: 'Request CV',
 } as const;
