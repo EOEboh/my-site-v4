@@ -4,7 +4,7 @@ import Button from '@/components/Button.astro';
 import SectionLabel from '@/components/SectionLabel.astro';
 import TerminalWindow from '@/components/TerminalWindow.astro';
 import { site, links } from '@/config/site';
-import { leadRescue, tiers, pricingAnchor } from '@/config/lead-rescue';
+import { leadRescue } from '@/config/lead-rescue';
 
 const title = 'Lead Rescue · enquiry routing for UK law firms';
 const description =
@@ -147,67 +147,30 @@ const jsonLd = {
     </ol>
   </section>
 
-  <!-- Pricing -->
-  <section class="border-y border-border bg-surface/40" aria-labelledby="pricing-heading">
+  <!-- Questions -->
+  <section class="border-y border-border bg-surface/40" aria-labelledby="faq-heading">
     <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
       <div class="flex flex-col gap-3">
-        <SectionLabel>pricing</SectionLabel>
-        <h2 id="pricing-heading" class="text-display font-bold text-fg">Pricing:</h2>
+        <SectionLabel>questions</SectionLabel>
+        <h2 id="faq-heading" class="text-display font-bold text-fg">Questions:</h2>
       </div>
-      <div class="mt-6 max-w-xl">
-        <p class="text-base leading-relaxed text-fg">{pricingAnchor.lead}</p>
-        <p class="mt-2 text-base leading-relaxed text-fg-secondary">{pricingAnchor.body}</p>
-      </div>
-      <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <div class="mt-8 flex max-w-3xl flex-col">
         {
-          tiers.map((tier) => (
-            <article class="card-interactive fade-up flex flex-col gap-4 rounded-xl p-7 sm:p-9">
-              <h3 class="text-xl font-bold tracking-tight text-fg">{tier.name}</h3>
-              <p class="flex flex-wrap items-baseline gap-x-2 font-mono text-sm">
-                <span class="text-lg font-semibold text-fg">{tier.setupLabel}</span>
-                <span class="text-fg-secondary">{tier.monthlyLabel}</span>
-              </p>
-              <p class="font-mono text-[13px] text-fg-muted">{tier.firstYearLabel}</p>
-              <ul class="flex flex-col gap-2 text-sm leading-relaxed text-fg-secondary">
-                {tier.includes.map((item) => (
-                  <li class="flex gap-3">
-                    <span class="font-mono text-accent" aria-hidden="true">
-                      +
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </article>
+          leadRescue.faqs.map((faq) => (
+            <details class="faq-item">
+              <summary>
+                <h3 class="text-lg font-bold tracking-tight text-fg">{faq.question}</h3>
+              </summary>
+              <p class="pb-5 text-sm leading-relaxed text-fg-secondary">{faq.answer}</p>
+            </details>
           ))
         }
       </div>
-      <p class="mt-6 font-mono text-[13px] text-fg-muted">{leadRescue.terms}</p>
-    </div>
-  </section>
-
-  <!-- Questions -->
-  <section class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28" aria-labelledby="faq-heading">
-    <div class="flex flex-col gap-3">
-      <SectionLabel>questions</SectionLabel>
-      <h2 id="faq-heading" class="text-display font-bold text-fg">Questions:</h2>
-    </div>
-    <div class="mt-8 flex max-w-3xl flex-col">
-      {
-        leadRescue.faqs.map((faq) => (
-          <details class="faq-item">
-            <summary>
-              <h3 class="text-lg font-bold tracking-tight text-fg">{faq.question}</h3>
-            </summary>
-            <p class="pb-5 text-sm leading-relaxed text-fg-secondary">{faq.answer}</p>
-          </details>
-        ))
-      }
     </div>
   </section>
 
   <!-- Final call to action -->
-  <section class="border-t border-border bg-surface/40" aria-labelledby="cta-heading">
+  <section aria-labelledby="cta-heading">
     <div class="mx-auto max-w-6xl px-5 py-20 text-center sm:px-8 sm:py-28">
       <h2 id="cta-heading" class="text-display font-bold text-fg">
         {leadRescue.finalCta.heading}
