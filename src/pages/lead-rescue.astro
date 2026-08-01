@@ -4,7 +4,7 @@ import Button from '@/components/Button.astro';
 import SectionLabel from '@/components/SectionLabel.astro';
 import TerminalWindow from '@/components/TerminalWindow.astro';
 import { site, links } from '@/config/site';
-import { leadRescue } from '@/config/lead-rescue';
+import { leadRescue, tiers, pricingAnchor } from '@/config/lead-rescue';
 
 const title = 'Lead Rescue · enquiry routing for UK law firms';
 const description =
@@ -169,15 +169,20 @@ const jsonLd = {
         <SectionLabel>pricing</SectionLabel>
         <h2 id="pricing-heading" class="text-display font-bold text-fg">Pricing:</h2>
       </div>
+      <div class="mt-6 max-w-xl">
+        <p class="text-base leading-relaxed text-fg">{pricingAnchor.lead}</p>
+        <p class="mt-2 text-base leading-relaxed text-fg-secondary">{pricingAnchor.body}</p>
+      </div>
       <div class="mt-10 grid gap-6 md:grid-cols-2">
         {
-          leadRescue.tiers.map((tier) => (
+          tiers.map((tier) => (
             <article class="card-interactive fade-up flex flex-col gap-4 rounded-xl p-7 sm:p-9">
               <h3 class="text-xl font-bold tracking-tight text-fg">{tier.name}</h3>
               <p class="flex flex-wrap items-baseline gap-x-2 font-mono text-sm">
-                <span class="text-lg font-semibold text-fg">{tier.setup}</span>
-                <span class="text-fg-secondary">{tier.recurring}</span>
+                <span class="text-lg font-semibold text-fg">{tier.setupLabel}</span>
+                <span class="text-fg-secondary">{tier.monthlyLabel}</span>
               </p>
+              <p class="font-mono text-[13px] text-fg-muted">{tier.firstYearLabel}</p>
               <ul class="flex flex-col gap-2 text-sm leading-relaxed text-fg-secondary">
                 {tier.includes.map((item) => (
                   <li class="flex gap-3">

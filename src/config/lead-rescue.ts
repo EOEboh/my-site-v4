@@ -72,11 +72,15 @@ export const leadRescue = {
     },
   ],
 
+  /**
+   * Prices are numbers so the first-year totals below are derived, not typed
+   * twice. Change a price here and every figure on the page follows.
+   */
   tiers: [
     {
       name: 'Standard',
-      setup: '£700 setup',
-      recurring: 'then £160 a month',
+      setup: 700,
+      monthly: 160,
       includes: [
         'Website form capture',
         'Cleaning and duplicate removal',
@@ -87,8 +91,8 @@ export const leadRescue = {
     },
     {
       name: 'Extended',
-      setup: '£1,200 setup',
-      recurring: 'then £160 a month',
+      setup: 1200,
+      monthly: 160,
       includes: [
         'Everything in Standard',
         'Multiple enquiry sources',
@@ -131,4 +135,26 @@ export const leadRescue = {
     body: 'Tell me how enquiries reach you now. I will tell you whether this fits and what it would take.',
     cta: 'Get in touch',
   },
+} as const;
+
+const gbp = (amount: number) => `£${amount.toLocaleString('en-GB')}`;
+
+/** Display strings for each tier, with the first year costed out in full. */
+export const tiers = leadRescue.tiers.map((tier) => ({
+  ...tier,
+  setupLabel: `${gbp(tier.setup)} setup`,
+  monthlyLabel: `then ${gbp(tier.monthly)} a month`,
+  firstYearLabel: `${gbp(tier.setup + tier.monthly * 12)} in the first year`,
+}));
+
+/**
+ * The anchor. Deliberately does not quote a figure for what a lost enquiry
+ * costs, because that number would be invented. It gives the firm the full
+ * first-year cost and asks them to set it against two numbers they own.
+ */
+export const pricingAnchor = {
+  lead: `In the first year, ${tiers
+    .map((t) => `${t.name} is ${gbp(t.setup + t.monthly * 12)}`)
+    .join(' and ')}.`,
+  body: 'Set that against two numbers: what an average matter is worth to the firm, and how many enquiries you take in a month. If you do not know the second one, that is the thing this fixes.',
 } as const;
