@@ -115,22 +115,7 @@ const jsonLd = {
         <h2 id="why-heading" class="text-display font-bold text-fg">Why me:</h2>
       </div>
       <div class="mt-8 flex max-w-xl flex-col gap-5 text-base leading-relaxed text-fg-secondary">
-        <p>
-          I build backend systems for a living, mostly in Go, mostly around payments. The part of
-          this work that goes wrong is not the setup. It is what happens six weeks later, when an
-          integration fails quietly and nobody notices.
-        </p>
-        <p>
-          That is the problem I work on professionally. I built and run <a
-            href="/work/hookdrop/"
-            class="font-mono text-accent transition-colors hover:text-accent-bright"
-            >hookdrop</a
-          >, a tool for inspecting exactly these failures.
-        </p>
-        <p>
-          I run my own infrastructure. Your enquiry data does not get scattered across services I
-          do not control.
-        </p>
+        {leadRescue.whyMe.map((paragraph) => <p>{paragraph}</p>)}
       </div>
     </div>
   </section>
