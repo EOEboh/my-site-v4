@@ -25,6 +25,7 @@ export const links = {
   tiktok: 'https://www.tiktok.com/@eo_eboh',
   youtube: 'https://youtube.com/@capeolabs?si=5Z3GRhdx4mHssI6G',
   requestCv: `mailto:${site.email}?subject=${encodeURIComponent('CV request')}`,
+  leadRescue: `mailto:${site.email}?subject=${encodeURIComponent('Lead Rescue enquiry')}`,
 } as const;
 
 

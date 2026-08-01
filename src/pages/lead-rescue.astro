@@ -1,0 +1,225 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/Button.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
+import TerminalWindow from '@/components/TerminalWindow.astro';
+import { site, links } from '@/config/site';
+import { leadRescue } from '@/config/lead-rescue';
+
+const title = 'Lead Rescue · enquiry routing for UK law firms';
+const description =
+  'I build systems that capture new business enquiries from your website and route them to the right solicitor, automatically. Set up in five working days.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Lead Rescue',
+  description,
+  serviceType: 'Enquiry capture and routing for law firms',
+  areaServed: { '@type': 'Country', name: 'United Kingdom' },
+  provider: {
+    '@type': 'Person',
+    name: site.name,
+    url: site.url,
+    email: `mailto:${site.email}`,
+  },
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <!-- Hero -->
+  <section class="mx-auto max-w-6xl px-5 pt-20 pb-16 sm:px-8 sm:pt-28 sm:pb-24">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+      <div class="flex flex-col gap-7">
+        <SectionLabel>lead-rescue</SectionLabel>
+        <h1 class="text-hero font-bold text-fg">
+          {leadRescue.hero.headline}<span class="cursor-blink" aria-hidden="true"></span>
+        </h1>
+        <p class="max-w-xl text-lg leading-relaxed text-fg-secondary">
+          {leadRescue.hero.subline}
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <Button href={links.leadRescue}>{leadRescue.hero.primaryCta}</Button>
+          <Button href="#how-it-works" variant="ghost">{leadRescue.hero.secondaryCta}</Button>
+        </div>
+      </div>
+
+      <TerminalWindow title="tail · enquiries" class="fade-up">
+        <pre
+          class="whitespace-pre text-fg-secondary"><span class="text-accent">$</span> tail -f enquiries.log
+
+<span class="text-fg-muted">14:01:31</span>  capture   website form · conveyancing
+<span class="text-fg-muted">14:01:33</span>  clean     duplicate check passed
+<span class="text-fg-muted">14:01:34</span>  route     <span class="text-accent">→</span> J. Whitfield, property
+<span class="text-fg-muted">14:01:35</span>  reply     acknowledgement sent
+<span class="text-fg-muted">14:01:36</span>  logged    <span class="text-accent">5s</span> from submission to inbox</pre>
+      </TerminalWindow>
+    </div>
+  </section>
+
+  <!-- The problem -->
+  <section class="border-y border-border bg-surface/40" aria-labelledby="problem-heading">
+    <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+      <div class="flex flex-col gap-3">
+        <SectionLabel>the-problem</SectionLabel>
+        <h2 id="problem-heading" class="text-display font-bold text-fg">
+          How enquiries go missing:
+        </h2>
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          leadRescue.problems.map((problem) => (
+            <article class="card-interactive fade-up flex flex-col gap-4 rounded-xl p-6 sm:p-8">
+              <h3 class="text-lg font-bold tracking-tight text-fg">{problem.title}</h3>
+              <p class="text-sm leading-relaxed text-fg-secondary">{problem.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- What it does -->
+  <section class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28" aria-labelledby="what-heading">
+    <div class="flex flex-col gap-3">
+      <SectionLabel>what-it-does</SectionLabel>
+      <h2 id="what-heading" class="text-display font-bold text-fg">What the system does:</h2>
+    </div>
+    <ul class="mt-8 flex max-w-3xl flex-col">
+      {
+        leadRescue.capabilities.map((capability) => (
+          <li class="flex flex-col gap-1 border-b border-border py-5 last:border-b-0 sm:flex-row sm:gap-6">
+            <h3 class="font-mono text-sm font-semibold text-accent sm:w-40 sm:shrink-0">
+              {capability.title}
+            </h3>
+            <p class="text-sm leading-relaxed text-fg-secondary">{capability.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Why me -->
+  <section class="border-y border-border bg-surface/40" aria-labelledby="why-heading">
+    <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+      <div class="flex flex-col gap-3">
+        <SectionLabel>why-me</SectionLabel>
+        <h2 id="why-heading" class="text-display font-bold text-fg">Why me:</h2>
+      </div>
+      <div class="mt-8 flex max-w-xl flex-col gap-5 text-base leading-relaxed text-fg-secondary">
+        <p>
+          I build backend systems for a living, mostly in Go, mostly around payments. The part of
+          this work that goes wrong is not the setup. It is what happens six weeks later, when an
+          integration fails quietly and nobody notices.
+        </p>
+        <p>
+          That is the problem I work on professionally. I built and run <a
+            href="/work/hookdrop/"
+            class="font-mono text-accent transition-colors hover:text-accent-bright"
+            >hookdrop</a
+          >, a tool for inspecting exactly these failures.
+        </p>
+        <p>
+          I run my own infrastructure. Your enquiry data does not get scattered across services I
+          do not control.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section
+    id="how-it-works"
+    class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28"
+    aria-labelledby="how-heading"
+  >
+    <div class="flex flex-col gap-3">
+      <SectionLabel>how-it-works</SectionLabel>
+      <h2 id="how-heading" class="text-display font-bold text-fg">How it works:</h2>
+    </div>
+    <ol class="mt-8 flex max-w-3xl flex-col">
+      {
+        leadRescue.steps.map((step, index) => (
+          <li class="flex gap-4 border-b border-border py-5 last:border-b-0 sm:gap-6">
+            <span class="font-mono text-sm font-semibold text-accent" aria-hidden="true">
+              0{index + 1}
+            </span>
+            <div class="flex flex-col gap-1">
+              <h3 class="text-lg font-bold tracking-tight text-fg">{step.title}</h3>
+              <p class="text-sm leading-relaxed text-fg-secondary">{step.body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- Pricing -->
+  <section class="border-y border-border bg-surface/40" aria-labelledby="pricing-heading">
+    <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+      <div class="flex flex-col gap-3">
+        <SectionLabel>pricing</SectionLabel>
+        <h2 id="pricing-heading" class="text-display font-bold text-fg">Pricing:</h2>
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        {
+          leadRescue.tiers.map((tier) => (
+            <article class="card-interactive fade-up flex flex-col gap-4 rounded-xl p-7 sm:p-9">
+              <h3 class="text-xl font-bold tracking-tight text-fg">{tier.name}</h3>
+              <p class="flex flex-wrap items-baseline gap-x-2 font-mono text-sm">
+                <span class="text-lg font-semibold text-fg">{tier.setup}</span>
+                <span class="text-fg-secondary">{tier.recurring}</span>
+              </p>
+              <ul class="flex flex-col gap-2 text-sm leading-relaxed text-fg-secondary">
+                {tier.includes.map((item) => (
+                  <li class="flex gap-3">
+                    <span class="font-mono text-accent" aria-hidden="true">
+                      +
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+      <p class="mt-6 font-mono text-[13px] text-fg-muted">{leadRescue.terms}</p>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section class="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28" aria-labelledby="faq-heading">
+    <div class="flex flex-col gap-3">
+      <SectionLabel>questions</SectionLabel>
+      <h2 id="faq-heading" class="text-display font-bold text-fg">Questions:</h2>
+    </div>
+    <div class="mt-8 flex max-w-3xl flex-col">
+      {
+        leadRescue.faqs.map((faq) => (
+          <details class="faq-item">
+            <summary>
+              <h3 class="text-lg font-bold tracking-tight text-fg">{faq.question}</h3>
+            </summary>
+            <p class="pb-5 text-sm leading-relaxed text-fg-secondary">{faq.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Final call to action -->
+  <section class="border-t border-border bg-surface/40" aria-labelledby="cta-heading">
+    <div class="mx-auto max-w-6xl px-5 py-20 text-center sm:px-8 sm:py-28">
+      <h2 id="cta-heading" class="text-display font-bold text-fg">
+        {leadRescue.finalCta.heading}
+      </h2>
+      <p class="mx-auto mt-4 max-w-md text-base leading-relaxed text-fg-secondary">
+        {leadRescue.finalCta.body}
+      </p>
+      <div class="mt-8 flex justify-center">
+        <Button href={links.leadRescue}>{leadRescue.finalCta.cta}</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
