@@ -1,8 +1,10 @@
 /**
- * Generates clearly-marked placeholder PNGs (and the default OG image)
- * in the site's dark terminal style. Re-run any time: pnpm node scripts/generate-placeholders.mjs
+ * Generates clearly-marked placeholder PNGs in the site's dark terminal style.
+ * Re-run any time: node scripts/generate-placeholders.mjs
  *
  * Swap each placeholder by dropping a real image at the same path and size.
+ * Open Graph share cards are finished assets, not placeholders: they live in
+ * scripts/generate-og-images.mjs.
  */
 import sharp from 'sharp';
 import { mkdir } from 'node:fs/promises';
@@ -18,22 +20,6 @@ const placeholder = (w, h, label, note) => `
   <text x="${w / 2}" y="${h / 2 + 30}" font-family="Menlo, monospace" font-size="${Math.round(w / 60)}" fill="#4a4a52" text-anchor="middle">replace with a real asset · ${w}x${h}</text>
 </svg>`;
 
-const ogImage = () => `
-<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="630" fill="#0a0a0b"/>
-  <rect x="80" y="80" width="1040" height="470" rx="14" fill="#121214" stroke="rgba(255,255,255,0.1)"/>
-  <circle cx="122" cy="122" r="7" fill="#2e2e33"/>
-  <circle cx="146" cy="122" r="7" fill="#2e2e33"/>
-  <circle cx="170" cy="122" r="7" fill="#2e2e33"/>
-  <line x1="80" y1="152" x2="1120" y2="152" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-  <text x="130" y="240" font-family="Menlo, monospace" font-size="26" fill="#6b6b74">~/cap-eo $ whoami</text>
-  <text x="130" y="320" font-family="Menlo, monospace" font-size="46" font-weight="bold" fill="#ededef">Emmanuel O. Eboh</text>
-  <text x="130" y="378" font-family="Menlo, monospace" font-size="26" fill="#a0a0a8">Backend and payments infrastructure.</text>
-  <text x="130" y="416" font-family="Menlo, monospace" font-size="26" fill="#a0a0a8">Go. Distributed systems. Fintech.</text>
-  <text x="130" y="496" font-family="Menlo, monospace" font-size="24" fill="#d4a257">capeodev.com</text>
-  <rect x="330" y="474" width="15" height="28" fill="#d4a257"/>
-</svg>`;
-
 const jobs = [
   { file: 'images/work/hookdrop-hero.png', w: 1600, h: 900, label: 'hookdrop dashboard screenshot' },
   { file: 'images/work/agent-skills-hero.png', w: 1600, h: 900, label: 'agent-skills screenshot' },
@@ -47,9 +33,3 @@ for (const job of jobs) {
   await sharp(Buffer.from(placeholder(job.w, job.h, job.label))).png().toFile(dest);
   console.log('wrote', dest);
 }
-
-await sharp(Buffer.from(ogImage()), { density: 144 })
-  .resize(1200, 630)
-  .png()
-  .toFile(path.join(OUT, 'og-default.png'));
-console.log('wrote', path.join(OUT, 'og-default.png'));

@@ -83,11 +83,24 @@ All placeholders are dark tiles marked `PLACEHOLDER`. Replace the file at the sa
 | agent-skills screenshot | `public/images/work/agent-skills-hero.png` | 1600x900 |
 | Capstone screenshot | `public/images/work/bootcamp-capstone-hero.png` | 1600x900 |
 | Hero demo GIF slot (unused on v1, terminal component renders instead) | `public/images/hero-demo.png` | 1200x750 |
-| Default OG image | `public/og-default.png` | 1200x630 |
 
 Placeholder links marked `TODO` in `src/config/site.ts`: cal.com booking URL, Substack, LinkedIn, X, TikTok, YouTube handles, and the production domain (also update `site` in `astro.config.mjs` and `public/robots.txt`).
 
 Regenerate placeholder tiles any time: `node scripts/generate-placeholders.mjs`.
+
+## Open Graph share cards
+
+Share cards are finished assets, not placeholders. Edit the copy in
+`scripts/generate-og-images.mjs` and re-run `node scripts/generate-og-images.mjs`.
+
+| Card | Path | Used by |
+| --- | --- | --- |
+| Default | `public/og-default.png` | every page that does not set `ogImage` |
+| Lead Rescue | `public/og-lead-rescue.png` | `/lead-rescue` |
+
+All cards are 1200x630 (1.91:1), the ratio Facebook, LinkedIn, X and Slack crop to. A page
+overrides the default by passing `ogImage` and `ogImageAlt` to `BaseLayout`. Always pass
+`ogImageAlt`: it becomes `og:image:alt`, which screen readers announce in place of the image.
 
 ## Analytics
 
