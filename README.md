@@ -1,4 +1,4 @@
-# CapEO Labs · capeolabs.com
+# CapEO Labs · capeodev.com
 
 Personal portfolio for Emmanuel O. Eboh (`cap-eo`). Astro 5, Tailwind CSS 4, static output, dark terminal aesthetic.
 

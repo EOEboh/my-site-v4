@@ -30,7 +30,7 @@ const ogImage = () => `
   <text x="130" y="320" font-family="Menlo, monospace" font-size="46" font-weight="bold" fill="#ededef">Emmanuel O. Eboh</text>
   <text x="130" y="378" font-family="Menlo, monospace" font-size="26" fill="#a0a0a8">Backend and payments infrastructure.</text>
   <text x="130" y="416" font-family="Menlo, monospace" font-size="26" fill="#a0a0a8">Go. Distributed systems. Fintech.</text>
-  <text x="130" y="496" font-family="Menlo, monospace" font-size="24" fill="#d4a257">capeolabs.com</text>
+  <text x="130" y="496" font-family="Menlo, monospace" font-size="24" fill="#d4a257">capeodev.com</text>
   <rect x="330" y="474" width="15" height="28" fill="#d4a257"/>
 </svg>`;
 
