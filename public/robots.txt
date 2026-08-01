@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://capeolabs.com/sitemap-index.xml
+Sitemap: https://capeodev.com/sitemap-index.xml
