@@ -53,15 +53,10 @@ export const leadRescue = {
     },
   ],
 
-  /**
-   * TODO: placeholder. Replace before this page goes in front of anyone.
-   * The drafted copy is in git: `git log -p --follow src/pages/lead-rescue.astro`.
-   * Paragraph lengths here match that draft so the layout stays representative.
-   */
   whyMe: [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.',
-    'Cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum sed ut perspiciatis unde omnis.',
+    'I build payment infrastructure for a living. Systems that move money and cannot quietly lose a transaction. The unglamorous work of making sure nothing disappears between two services is what I do professionally, and it is the same problem as an enquiry that never reaches a fee earner.',
+    'Most people setting up automations cannot tell you when one has stopped working. I built a tool that watches for exactly that: when an integration fails silently, it gets caught and replayed rather than found weeks later. That is the difference between a system you can trust and one you find out about from a client who never heard back.',
+    'Everything runs on infrastructure I control. Your enquiries are not scattered across half a dozen services I do not run, and nothing about your clients goes anywhere it should not. I built the system that found your firm, so you can see the standard of the work before you commit to any of it.',
   ],
 
   steps: [
