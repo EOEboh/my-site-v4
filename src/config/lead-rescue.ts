@@ -53,10 +53,25 @@ export const leadRescue = {
     },
   ],
 
+  /**
+   * `link.phrase` must appear verbatim in `text`. The page turns that phrase
+   * into the anchor and leaves the wording alone; if it stops matching, the
+   * paragraph renders as plain text rather than breaking.
+   */
   whyMe: [
-    'I build payment infrastructure for a living. Systems that move money and cannot quietly lose a transaction. The unglamorous work of making sure nothing disappears between two services is what I do professionally, and it is the same problem as an enquiry that never reaches a fee earner.',
-    'Most people setting up automations cannot tell you when one has stopped working. I built a tool that watches for exactly that: when an integration fails silently, it gets caught and replayed rather than found weeks later. That is the difference between a system you can trust and one you find out about from a client who never heard back.',
-    'Everything runs on infrastructure I control. Your enquiries are not scattered across half a dozen services I do not run, and nothing about your clients goes anywhere it should not. I built the system that found your firm, so you can see the standard of the work before you commit to any of it.',
+    {
+      text: 'I build payment infrastructure for a living. Systems that move money and cannot quietly lose a transaction. The unglamorous work of making sure nothing disappears between two services is what I do professionally, and it is the same problem as an enquiry that never reaches a fee earner.',
+    },
+    {
+      text: 'Most people setting up automations cannot tell you when one has stopped working. I built a tool that watches for exactly that: when an integration fails silently, it gets caught and replayed rather than found weeks later. That is the difference between a system you can trust and one you find out about from a client who never heard back.',
+      link: {
+        phrase: 'a tool that watches for exactly that',
+        href: '/work/hookdrop/',
+      },
+    },
+    {
+      text: 'Everything runs on infrastructure I control. Your enquiries are not scattered across half a dozen services I do not run, and nothing about your clients goes anywhere it should not. I built the system that found your firm, so you can see the standard of the work before you commit to any of it.',
+    },
   ],
 
   steps: [
