@@ -6,6 +6,10 @@ import TerminalWindow from '@/components/TerminalWindow.astro';
 import { site, links } from '@/config/site';
 import { leadRescue } from '@/config/lead-rescue';
 
+// Inline link inside body copy, matching the underline style of .prose-dark a.
+const proseLink =
+  'text-accent underline decoration-accent/40 underline-offset-[3px] transition-colors hover:text-accent-bright';
+
 const title = 'Lead Rescue · enquiry routing for UK law firms';
 const description =
   'I build systems that capture new business enquiries from your website and route them to the right solicitor, automatically. Set up in five working days.';
@@ -115,7 +119,17 @@ const jsonLd = {
         <h2 id="why-heading" class="text-display font-bold text-fg">Why me:</h2>
       </div>
       <div class="mt-8 flex max-w-xl flex-col gap-5 text-base leading-relaxed text-fg-secondary">
-        {leadRescue.whyMe.map((paragraph) => <p>{paragraph}</p>)}
+        {
+          leadRescue.whyMe.map((paragraph) => {
+            const parts = paragraph.link ? paragraph.text.split(paragraph.link.phrase) : [];
+            // Fall back to plain text if the phrase no longer matches the copy.
+            if (!paragraph.link || parts.length !== 2) return <p>{paragraph.text}</p>;
+            // Kept on one line: Astro turns line breaks between these into spaces.
+            return (
+              <p>{parts[0]}<a href={paragraph.link.href} class={proseLink}>{paragraph.link.phrase}</a>{parts[1]}</p>
+            );
+          })
+        }
       </div>
     </div>
   </section>
