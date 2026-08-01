@@ -1,6 +1,20 @@
 ---
 import { links } from '@/config/site';
 
+/**
+ * ctaLabel/ctaHref let a page override the header action. Landing pages that
+ * offer a single contact route should not also show "Book a call".
+ */
+interface Props {
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const { ctaLabel = 'Book a call', ctaHref = links.bookCall } = Astro.props;
+
+// Only off-site destinations open in a new tab. A mailto must not.
+const ctaExternal = ctaHref.startsWith('http');
+
 const navLinks = [
   { label: 'Work', href: '/#work' },
   { label: 'Services', href: '/#services' },
@@ -33,12 +47,11 @@ const navLinks = [
         }
       </ul>
       <a
-        href={links.bookCall}
-        target="_blank"
-        rel="noopener"
+        href={ctaHref}
         class="rounded-md bg-accent px-4 py-2 font-mono text-[13px] font-semibold text-black transition-colors hover:bg-accent-bright"
+        {...ctaExternal ? { target: '_blank', rel: 'noopener' } : {}}
       >
-        Book a call
+        {ctaLabel}
       </a>
     </div>
   </nav>

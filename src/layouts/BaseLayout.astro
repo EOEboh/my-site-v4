@@ -9,6 +9,9 @@ interface Props {
   description?: string;
   ogImage?: string;
   jsonLd?: Record<string, unknown>;
+  /** Override the header action. Defaults to "Book a call". */
+  navCtaLabel?: string;
+  navCtaHref?: string;
 }
 
 const {
@@ -16,6 +19,8 @@ const {
   description = site.description,
   ogImage = '/og-default.png',
   jsonLd,
+  navCtaLabel,
+  navCtaHref,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
@@ -77,7 +82,7 @@ const posthogHost = import.meta.env.PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog
     >
       Skip to content
     </a>
-    <Nav />
+    <Nav ctaLabel={navCtaLabel} ctaHref={navCtaHref} />
     <main id="main">
       <slot />
     </main>
