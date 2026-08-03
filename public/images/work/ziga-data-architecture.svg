@@ -1,0 +1,105 @@
+<svg width="1200" height="440" viewBox="0 0 1200 440" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ziga-arch-title ziga-arch-desc">
+  <title id="ziga-arch-title">Ziga Data architecture</title>
+  <desc id="ziga-arch-desc">A user submits a lead as text or a screenshot through the browser to a single Go binary on a Hetzner VPS. The binary calls OpenAI to extract structured fields, stores a pending row in SQLite, and shows it for review. On confirm, the binary writes the row to the user's own Google Sheet via their OAuth token. The SQLite database is backed up nightly to Cloudflare R2.</desc>
+
+  <defs>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1 L8 5 L2 9" fill="none" stroke="#E8A33D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrowGrey" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1 L8 5 L2 9" fill="none" stroke="#6B6B6B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect width="1200" height="440" fill="#0A0A0A"/>
+
+  <!-- ================= User / Browser ================= -->
+  <rect x="40" y="150" width="200" height="90" rx="12" fill="#161616" stroke="#2A2A2A" stroke-width="1"/>
+  <text x="140" y="188" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="16" font-weight="600" fill="#F5F5F5">Browser</text>
+  <text x="140" y="210" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11.5" fill="#8A8A8A">paste, forward,</text>
+  <text x="140" y="225" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11.5" fill="#8A8A8A">or screenshot a lead</text>
+
+  <!-- Browser -> Cloudflare -->
+  <line x1="240" y1="195" x2="292" y2="195" stroke="#E8A33D" stroke-width="1.6" marker-end="url(#arrowAmber)"/>
+
+  <!-- ================= Cloudflare ================= -->
+  <rect x="294" y="150" width="176" height="90" rx="12" fill="#161616" stroke="#2A2A2A" stroke-width="1"/>
+  <text x="382" y="190" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="16" font-weight="600" fill="#F5F5F5">Cloudflare</text>
+  <text x="382" y="212" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11.5" fill="#8A8A8A">TLS, DNS, proxy</text>
+
+  <!-- Cloudflare -> VPS -->
+  <line x1="470" y1="195" x2="562" y2="195" stroke="#E8A33D" stroke-width="1.6" marker-end="url(#arrowAmber)"/>
+
+  <!-- ================= Hetzner VPS container ================= -->
+  <rect x="564" y="70" width="340" height="300" rx="16" fill="#111111" stroke="#242424" stroke-width="1"/>
+  <text x="734" y="102" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="14" font-weight="600" fill="#C9C9C9">Hetzner VPS (single node)</text>
+
+  <!-- Go binary -->
+  <rect x="590" y="122" width="288" height="86" rx="10" fill="#191919" stroke="#2E2E2E" stroke-width="1"/>
+  <text x="734" y="152" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="15" font-weight="600" fill="#F5F5F5">Go binary (embedded React UI)</text>
+  <text x="734" y="176" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11" fill="#8A8A8A">auth · extract · review · confirm</text>
+  <text x="734" y="192" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11" fill="#8A8A8A">per-user OAuth · rate limit</text>
+
+  <!-- SQLite -->
+  <rect x="590" y="238" width="288" height="80" rx="10" fill="#191919" stroke="#2E2E2E" stroke-width="1"/>
+  <text x="734" y="270" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="15" font-weight="600" fill="#F5F5F5">SQLite</text>
+  <text x="734" y="292" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11" fill="#8A8A8A">accounts, sessions, pending rows,</text>
+  <text x="734" y="306" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11" fill="#8A8A8A">encrypted tokens (local disk)</text>
+
+  <!-- binary <-> sqlite (internal link) -->
+  <line x1="734" y1="208" x2="734" y2="238" stroke="#3A3A3A" stroke-width="1.4"/>
+
+  <!-- ================= OpenAI (extraction) ================= -->
+  <rect x="470" y="330" width="200" height="80" rx="12" fill="#161616" stroke="#2A2A2A" stroke-width="1"/>
+  <text x="570" y="362" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="15" font-weight="600" fill="#F5F5F5">OpenAI</text>
+  <text x="570" y="384" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11" fill="#8A8A8A">field extraction</text>
+
+  <!-- binary <-> OpenAI (round trip, amber) -->
+  <path d="M640 208 L640 330" fill="none" stroke="#E8A33D" stroke-width="1.6" marker-end="url(#arrowAmber)"/>
+  <path d="M600 330 L600 208" fill="none" stroke="#E8A33D" stroke-width="1.6" marker-end="url(#arrowAmber)"/>
+  <text x="655" y="285" text-anchor="start" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#8A8A8A">extract</text>
+
+  <!-- ================= User's Google Sheet ================= -->
+  <rect x="960" y="122" width="200" height="86" rx="12" fill="#161616" stroke="#2A2A2A" stroke-width="1"/>
+  <text x="1060" y="152" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="15" font-weight="600" fill="#F5F5F5">Google Sheet</text>
+  <text x="1060" y="174" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11" fill="#8A8A8A">the user's own sheet</text>
+  <text x="1060" y="189" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11" fill="#8A8A8A">via their OAuth token</text>
+
+  <!-- binary -> Google Sheet (on confirm, amber) -->
+  <line x1="878" y1="165" x2="958" y2="165" stroke="#E8A33D" stroke-width="1.6" marker-end="url(#arrowAmber)"/>
+  <text x="918" y="156" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#8A8A8A">on confirm</text>
+
+  <!-- ================= Cloudflare R2 (backups) ================= -->
+  <rect x="960" y="250" width="200" height="80" rx="12" fill="#161616" stroke="#2A2A2A" stroke-width="1"/>
+  <text x="1060" y="282" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="15" font-weight="600" fill="#F5F5F5">Cloudflare R2</text>
+  <text x="1060" y="304" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11" fill="#8A8A8A">nightly backups</text>
+
+  <!-- sqlite -> R2 (dashed grey) -->
+  <path d="M878 285 L958 285" fill="none" stroke="#6B6B6B" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#arrowGrey)"/>
+
+  <!-- ================= Email (verification / reset) ================= -->
+  <rect x="960" y="360" width="200" height="60" rx="12" fill="#141414" stroke="#232323" stroke-width="1"/>
+  <text x="1060" y="386" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13.5" font-weight="600" fill="#C9C9C9">Email (SMTP)</text>
+  <text x="1060" y="404" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#7A7A7A">verify, reset links</text>
+
+  <!-- binary -> email (dashed grey, secondary) -->
+  <path d="M878 320 C 920 360, 930 380, 958 388" fill="none" stroke="#6B6B6B" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#arrowGrey)"/>
+
+  <!-- ================= Planned: email ingestion (dotted, muted) ================= -->
+  <rect x="40" y="330" width="200" height="80" rx="12" fill="#101010" stroke="#242424" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="140" y="360" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13.5" font-weight="600" fill="#7A7A7A">Forwarding address</text>
+  <text x="140" y="380" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#5F5F5F">planned: leads arrive</text>
+  <text x="140" y="394" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#5F5F5F">by auto-forward</text>
+
+  <!-- planned ingestion -> VPS (dotted, muted) -->
+  <path d="M240 360 C 400 360, 470 300, 588 268" fill="none" stroke="#4A4A4A" stroke-width="1.4" stroke-dasharray="2 5" marker-end="url(#arrowGrey)"/>
+
+  <!-- legend -->
+  <line x1="40" y1="60" x2="70" y2="60" stroke="#E8A33D" stroke-width="1.6"/>
+  <text x="78" y="64" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#8A8A8A">primary flow</text>
+  <line x1="180" y1="60" x2="210" y2="60" stroke="#6B6B6B" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="218" y="64" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#8A8A8A">background</text>
+  <line x1="320" y1="60" x2="350" y2="60" stroke="#4A4A4A" stroke-width="1.4" stroke-dasharray="2 5"/>
+  <text x="358" y="64" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="10.5" fill="#8A8A8A">planned</text>
+</svg>
