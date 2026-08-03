@@ -22,7 +22,6 @@ const placeholder = (w, h, label, note) => `
 
 const jobs = [
   { file: 'images/work/hookdrop-hero.png', w: 1600, h: 900, label: 'hookdrop dashboard screenshot' },
-  { file: 'images/work/agent-skills-hero.png', w: 1600, h: 900, label: 'agent-skills screenshot' },
   { file: 'images/work/bootcamp-capstone-hero.png', w: 1600, h: 900, label: 'capstone screenshot' },
   { file: 'images/hero-demo.png', w: 1200, h: 750, label: 'hookdrop demo GIF slot' },
 ];
