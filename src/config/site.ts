@@ -9,9 +9,9 @@ export const site = {
   name: 'Emmanuel O. Eboh',
   brand: 'CapEO Labs',
   handle: 'EOEboh',
-  title: 'Emmanuel O. Eboh: Go backend and payments engineer',
+  title: 'Emmanuel O. Eboh: backend and AI engineer',
   description:
-    'Go backend and payments engineer. Solo-shipped hookdrop, a live webhook debugging SaaS, and teaches 20,000+ developers how backends actually work.',
+    'backend and AI engineer. Solo-shipped hookdrop, a live webhook debugging SaaS, and teaches 20,000+ developers how backends actually work.',
   url: 'https://capeodev.com',
   email: 'hi@capeodev.com',
 } as const;
@@ -30,7 +30,7 @@ export const links = {
 
 
 export const hero = {
-  headline: "I build Go backends and LLM systems that don't fall over.",
+  headline: "I build backends and LLM systems that don't fall over.",
   subline:
     'Six years shipping production systems in e-commerce, payments, and AI. I built hookdrop and Ziga Data, and I still run them. 20,000+ developers read my engineering breakdowns.',
   primaryCta: 'Book a 30-minute call',
